@@ -16,6 +16,8 @@ import DonorDetails from './pages/DonorDetails';
 import { BloodDonorsProvider } from './context/BloodDonorsContext';
 import APositive from './bloodgroups/APositive';
 import About from './pages/About';
+import Credit from './pages/Credit';
+import Dashboard from './dashboard/Dashboard';
 
 const router = createBrowserRouter([
   {
@@ -58,6 +60,14 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <About></About>
+      },
+      {
+        path: "/credit",
+        element: <Credit></Credit>
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard></Dashboard>
       },
     ]
   },

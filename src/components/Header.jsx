@@ -24,7 +24,7 @@ export default function Header() {
             </div>
             <ul tabIndex={0} class="menu menu-sm dropdown-content bg-base-100 gap-2 rounded-box z-1 mt-3 w-52 p-2 shadow">
               <li> <Link to='/donor'> আপনার প্রোফাইল </Link> </li>
-              <li><Link to=''> আপনার যুক্ত করা প্রোফাইলসমূহ </Link></li>
+              <li><Link to='/dashboard'> ড্যাশবোর্ড </Link></li>
               <li><Link to='/add'> ডোনার যুক্ত করুন </Link></li>
               <li><button>লগআউট করুন</button></li>
             </ul>
