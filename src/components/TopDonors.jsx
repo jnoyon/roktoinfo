@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import { BloodDonorsContext } from "../context/BloodDonorsContext";
-
+import { FaEye } from "react-icons/fa";
+import { MdBloodtype } from "react-icons/md";
+import { Link } from "react-router-dom";
 export default function TopDonors() {
 
   const {donors} = useContext(BloodDonorsContext);
@@ -9,7 +11,7 @@ export default function TopDonors() {
   return (
     <div className="w-11/12 mx-auto">
       <ul className="list bg-base-100 rounded-box shadow-md">
-        <li className="p-4 pb-2 text-xs opacity-60 tracking-wide"> সর্বোচ্চ রক্তদাতা </li>
+        <li className="p-4 pb-2 text-xs opacity-60 tracking-wide flex items-center gap-0.5"> <MdBloodtype className="text-red-500" /> <span> সর্বোচ্চ রক্তদাতা </span> </li>
 
         {donors.map((donor, index) => {
   return (
@@ -30,23 +32,9 @@ export default function TopDonors() {
           সর্বশেষ রক্তদান: { donor.last_donation}
         </div>
       </div>
-      <button className="btn btn-square btn-ghost">
-        <svg
-          className="size-[1.2em]"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-        >
-          <g
-            strokeLinejoin="round"
-            strokeLinecap="round"
-            strokeWidth="2"
-            fill="none"
-            stroke="currentColor"
-          >
-            <path d="M6 3L20 12 6 21 6 3z"></path>
-          </g>
-        </svg>
-      </button>
+      <Link className="btn btn-square btn-ghost">
+        <FaEye className="text-lg text-gray-700" />
+      </Link>
     </li>
   );
 })}

@@ -1,47 +1,45 @@
-import React from "react";
+import { MdDone } from "react-icons/md";
+import { MdCancel } from "react-icons/md";
+import { MdChangeCircle } from "react-icons/md";
 
 export default function Dashboard() {
   return (
     <div className="mx-auto w-11/12 py-5">
-      <div className="bg-white">
-        <div className="overflow-x-auto">
-          <table className="table">
-            {/* head */}
-            <thead>
-              <tr>
-                <th>ডোনার</th>
-                <th>একশন</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* row 1 */}
-              <tr>
 
-                <td>
-                  <div className="flex items-center gap-3">
-                    <div className="avatar">
-                      <div className="mask mask-squircle h-12 w-12">
-                        <img src="https://rokto.xyz/wp-content/uploads/2024/07/1720365208958-2.jpg" alt="Icon" />
-                      </div>
-                    </div>
-                    <div>
-                      <div className="font-bold"> জিহাদুর রহমান নয়ন </div>
-                    </div>
-                  </div>
-                </td>
-
-                <td>Purple</td>
-                <th>
-                  <button className="btn btn-ghost btn-xs">details</button>
-                </th>
-              </tr>
-             
-            </tbody>
-            {/* foot */}
-
-          </table>
+      <div>
+        <div className="bg-white p-1 mb-2 rounded-md">
+          <h2 className="divider font-bold"> মডারেশন </h2>
         </div>
+        <ul className="bg-white rounded-md">
+          <li className="flex items-center justify-between p-2 border-b border-gray-300"> 
+              <div className="flex gap-2">
+                  <img src="https://rokto.xyz/wp-content/uploads/2024/07/1720365208958-2.jpg" alt="Icon" className="w-16 rounded-2xl" /> 
+                  <div className="flex flex-col gap-1">
+                    <h2 className="font-bold text-sm"> জিহাদুর রহমান নয়ন </h2>
+                    <p className="text-xs text-gray-600"> বিরুনীয়া, ভালুকা, ময়মনসিংহ </p>
+                    <p className="text-xs text-gray-600 flex items-center gap-1"> <MdChangeCircle className="text-red-400" /> 22-04-2002 তারিখে রক্তদান করেছেন। </p>
+                  </div>
+              </div>
+              <div className="flex gap-2">
+                <button className="bg-green-400 px-2 py-1 cursor-pointer rounded-md text-white"> <MdDone /> </button> 
+                <button className="bg-red-400 px-2 py-1 cursor-pointer rounded-md text-white"> <MdCancel /> </button>
+              </div>
+          </li>
+          <li className="flex items-center justify-between p-2"> 
+              <div className="flex gap-2">
+                  <img src="https://rokto.xyz/wp-content/uploads/2024/07/1720365208958-2.jpg" alt="Icon" className="w-16 rounded-2xl" /> 
+                  <div className="flex flex-col gap-1">
+                    <h2 className="font-bold text-sm"> জিহাদুর রহমান নয়ন </h2>
+                    <p className="text-xs text-gray-600"> বিরুনীয়া, ভালুকা, ময়মনসিংহ </p>
+                    <p className="text-xs text-gray-600 flex items-center gap-1"> <MdChangeCircle className="text-red-400" /> 22-04-2002 তারিখে রক্তদান করেছেন। </p>
+                  </div>
+              </div>
+              <div className="flex gap-2">
+                <button className="bg-green-400 px-2 py-1 cursor-pointer rounded-md text-white"> <MdDone /> </button> 
+                <button className="bg-red-400 px-2 py-1 cursor-pointer rounded-md text-white"> <MdCancel /> </button>
+              </div>
+          </li>
+        </ul>
       </div>
     </div>
   );
