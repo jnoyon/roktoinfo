@@ -18,6 +18,9 @@ import APositive from './bloodgroups/APositive';
 import About from './pages/About';
 import Credit from './pages/Credit';
 import Dashboard from './dashboard/Dashboard';
+import AuthProvider from './firebase/AuthProvider';
+import Register from './auth/Register';
+import PrivateRoute from './auth/PrivateRoute';
 
 const router = createBrowserRouter([
   {
@@ -43,11 +46,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/register",
-        element: <More></More>
+        element: <Register></Register>
       },
       {
         path: "/add",
-        element: <AddDonor></AddDonor>
+        element: <PrivateRoute> <AddDonor></AddDonor> </PrivateRoute>
       },
       {
         path: "/donor",
@@ -67,7 +70,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard",
-        element: <Dashboard></Dashboard>
+        element: <PrivateRoute> <Dashboard></Dashboard> </PrivateRoute>
       },
     ]
   },
@@ -76,7 +79,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BloodDonorsProvider>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </BloodDonorsProvider>
   </StrictMode>
 )
