@@ -34,25 +34,15 @@ export default function AddDonor() {
             <option>AB-</option>
           </select>
         </label>
+        
         <label className="input w-full">
           <span className="label"> সর্বশেষ রক্তদান </span>
           <input type="date" />
         </label>
-        <label className="input w-full">
-          <span className="label"> জন্মতারিখ </span>
-          <input type="date" />
-        </label>
+        
         <label className="floating-label">
             <span> মোবাইল নম্বর * </span>
             <input type="number" name='donor_name' placeholder="Your name" className="input input-md w-full"  required/>
-        </label>
-        <label className="floating-label">
-            <span> বিকল্প মোবাইল নম্বর </span>
-            <input type="number" name='donor_name' placeholder="Your name" className="input input-md w-full" />
-        </label>
-        <label className="floating-label">
-            <span> রক্তদাতার পেশা </span>
-            <input type="text" name='donor_name' placeholder="Your name" className="input input-md w-full" />
         </label>
         <fieldset className="fieldset">
           <legend className="fieldset-legend"> রক্তদাতার ছবি </legend>
@@ -80,6 +70,31 @@ export default function AddDonor() {
             <input type="checkbox" className="checkbox checkbox-sm" /> ঢাকা
           </label>
       </fieldset>
+      <h2 className="divider"> অতিরিক্ত তথ্য </h2>
+      <label className="floating-label">
+            <span> বিকল্প মোবাইল নম্বর </span>
+            <input type="number" name='donor_name' placeholder="Your name" className="input input-md w-full" />
+        </label>
+        <label className="floating-label">
+            <span> রক্তদাতার ওজন </span>
+            <input type="number" name='donor_name' placeholder="Your name" className="input input-md w-full" />
+        </label>
+        <label className="floating-label">
+            <span> রক্তদাতার পেশা </span>
+            <input type="text" name='donor_name' placeholder="Your name" className="input input-md w-full" />
+        </label>
+        <label className="input w-full">
+          <span className="label"> জন্মতারিখ </span>
+          <input type="date" />
+        </label>
+        <label className="select w-full">
+          <span className="label">সংগঠন</span>
+          <select>
+            <option> প্রযোজ্য নয় </option>
+            <option> বিরুনীয়া ব্লাড ডোনার সোসাইটি </option>
+            <option> বন্ধু সংগঠন </option>
+          </select>
+        </label>
       <input type="submit" value="যুক্ত করুন" className='btn btn-accent' />
       </form>
     </div>
