@@ -75,7 +75,7 @@ export default function Footer() {
           <span className="dock-label">রক্ত খুঁজুন</span>
         </NavLink>
 
-        <NavLink to='/more'>
+        <NavLink to='/request'>
         <svg
             className="size-[1.2em]"
             xmlns="http://www.w3.org/2000/svg"
@@ -102,7 +102,7 @@ export default function Footer() {
               ></path>
             </g>
           </svg>
-          <span className="dock-label">সাপোর্ট টীম</span>
+          <span className="dock-label"> ব্লাড রিকুয়েক্ট </span>
         </NavLink>
       </div>
     </div>

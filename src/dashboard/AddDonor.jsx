@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { authContext } from '../firebase/AuthProvider';
-
+import Swal from 'sweetalert2'
 export default function AddDonor() {
   const {user} = useContext(authContext);
   const [donorName, setDonorName] = useState('');
@@ -17,12 +17,13 @@ export default function AddDonor() {
   const [organization, setOrganization] = useState('');
   const [image, setImage] = useState(null);
   const [locations, setLocations] = useState({
-    valuka: false,
-    moymonsingh: false,
-    maona: false,
+    bhaluka: false,
+    mymensingh: false,
+    mawna: false,
     gazipur: false,
-    gofargao: false,
-    dhaka: false,
+    gafargoan: false,
+    dhaka: false, 
+    others: false,
   });
 
   const handleSubmit = (e) => {
@@ -50,7 +51,7 @@ export default function AddDonor() {
     
     // You can process the donor data here (e.g., send it to an API)
 
-    fetch('http://localhost:5000/donors',{
+    fetch('https://roktoinfo-server.vercel.app/donors',{
       method: 'POST',
       headers: {
         'content-type' : 'application/json'
@@ -59,7 +60,22 @@ export default function AddDonor() {
     })
     .then(res=> res.json())
     .then(data=> {
-      console.log(data)
+      if(data.insertedId){
+        Swal.fire({
+          title: 'অভিনন্দন!',
+          text: 'আপনার প্রোফাইল যুক্ত করা হয়েছে',
+          icon: 'success',
+          confirmButtonText: 'ওকে'
+        })
+      }
+      else{
+        Swal.fire({
+          title: 'অভিনন্দন!',
+          text: 'আপনার প্রোফাইল যুক্ত করা হয়েছে',
+          icon: 'error',
+          confirmButtonText: 'ওকে'
+        })
+      }
     })
 
   };
@@ -173,7 +189,7 @@ export default function AddDonor() {
 
         <fieldset className="fieldset p-4 bg-base-100 border border-base-300 flex flex-wrap gap-2 rounded-box">
           <legend className="fieldset-legend">নিকটস্থ রক্তদান এলাকা</legend>
-          {['bhaluka', 'mymensingh', 'mawna', 'gazipur', 'gafargaon', 'dhaka'].map((location) => (
+          {['bhaluka', 'mymensingh', 'mawna', 'gazipur', 'gafargaon', 'dhaka', 'others'].map((location) => (
             <label className="fieldset-label" key={location}>
               <input
                 type="checkbox"
@@ -188,6 +204,7 @@ export default function AddDonor() {
               {location === 'gazipur' && 'গাজীপুর'}
               {location === 'gafargaon' && 'গফরগাঁও'}
               {location === 'dhaka' && 'ঢাকা'}
+              {location === 'others' && 'অন্যান্য'}
             </label>
           ))}
         </fieldset>

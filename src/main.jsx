@@ -21,6 +21,7 @@ import Dashboard from './dashboard/Dashboard';
 import AuthProvider from './firebase/AuthProvider';
 import Register from './auth/Register';
 import PrivateRoute from './auth/PrivateRoute';
+import BloodRequest from './pages/BloodRequest';
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "/more",
         element: <More></More>
+      },
+      {
+        path: "/request",
+        element: <BloodRequest></BloodRequest>
       },
       {
         path: "/login",

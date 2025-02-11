@@ -1,0 +1,10 @@
+import React from 'react'
+import AddNewRequest from '../components/bloodrequest/AddNewRequest'
+
+export default function BloodRequest() {
+  return (
+    <div className='container mx-auto w-11/12 py-5'>
+        <AddNewRequest></AddNewRequest>
+    </div>
+  )
+}
