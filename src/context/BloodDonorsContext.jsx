@@ -11,7 +11,7 @@ export const BloodDonorsProvider = ({ children }) => {
   useEffect(() => {
     const fetchDonors = async () => {
       try {
-        const response = await axios.get('donors.json'); // Replace with your API endpoint
+        const response = await axios.get('https://roktoinfo-server.vercel.app/donors'); // Replace with your API endpoint
         setDonors(response.data);
       } catch (err) {
         setError(err.message);

@@ -3,6 +3,7 @@ import { BloodDonorsContext } from "../context/BloodDonorsContext";
 import { FaEye } from "react-icons/fa";
 import { MdBloodtype } from "react-icons/md";
 import { Link } from "react-router-dom";
+import donorIcon from '../assets/images/donor-icon.png'
 export default function TopDonors() {
 
   const {donors} = useContext(BloodDonorsContext);
@@ -20,16 +21,23 @@ export default function TopDonors() {
         {String(index + 1).padStart(2, '0')}
       </div>
       <div>
-        <img
+        {
+          donor.image? <img
           className="size-10 rounded-box"
           src={donor.image}
-          alt={donor.name}
+          alt={donor.donorName}
+        /> : <img
+          className="size-10 rounded-box"
+          src={donorIcon}
+          alt={donor.donorName}
         />
+        }
+        
       </div>
       <div className="list-col-grow">
-        <div>{donor.name} <span className="bg-red-200 ml-2 text-xs px-2 rounded-md"> {donor.blood_group} </span> </div>
+        <div>{donor.donorName} <span className="bg-red-200 ml-2 text-xs px-2 rounded-md"> {donor.bloodGroup} </span> </div>
         <div className="text-xs uppercase font-semibold opacity-60">
-          সর্বশেষ রক্তদান: { donor.last_donation}
+          সর্বশেষ রক্তদান: { donor.lastDonation}
         </div>
       </div>
       <Link className="btn btn-square btn-ghost">

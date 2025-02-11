@@ -10,17 +10,17 @@ export default function DonorDetails() {
   return (
     <div className="mt-5">
       <ToastContainer
-position="bottom-center"
-autoClose={1000}
-hideProgressBar={false}
-newestOnTop={false}
-closeOnClick={false}
-rtl={false}
-pauseOnFocusLoss
-draggable
-pauseOnHover
-theme="light"
-/>
+      position="bottom-center"
+      autoClose={1000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick={false}
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="light"
+      />
       <div className="card w-11/12 md:w-1/3 mx-auto bg-base-100 shadow-sm p-3">
         <div className="text-center">
           <img src="https://rokto.xyz/wp-content/uploads/2024/07/1720365208958-2.jpg" className="w-28 h-28 rounded-md mb-2 mx-auto" alt="Donor" />

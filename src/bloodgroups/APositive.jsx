@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { BloodDonorsContext } from '../context/BloodDonorsContext'
 import { Link } from 'react-router-dom';
+import donorIcon from '../assets/images/donor-icon.png'
 
 export default function APositive() {
   const {donors} = useContext(BloodDonorsContext);
@@ -20,14 +21,16 @@ export default function APositive() {
             donors.map((donor, index) => (
             <div key={index} id={`item${index + 1}`} className="carousel-item w-full">
                 <div className="flex flex-col gap-3 text-center bg-white rounded-md py-5 w-full">
-                    <img src={donor.image} class="w-24 h-24 rounded-full mx-auto" />
+                    {
+                      donor.image? <img src={donor.image} class="w-24 h-24 rounded-full mx-auto" /> : <img src={donorIcon} class="w-24 h-24 rounded-full mx-auto" />
+                    } 
                     <div className="info">
-                        <h1 className="font-bold"> {donor.name} </h1>
+                        <h1 className="font-bold"> {donor.donorName} </h1>
                         <p className="text-sm"> {donor.current_address} </p>
-                        <p className="text-sm"> সর্বশেষ রক্তদান: {donor.last_donation} </p>
+                        <p className="text-sm"> সর্বশেষ রক্তদান: {donor.lastDonation} </p>
                     </div>
                     <div className="mt-2 flex gap-2 justify-center">
-                      <a className="btn btn-primary ">কল করুন</a>
+                      <a className="btn btn-primary">কল করুন</a>
                       <Link to='../donor' className="btn btn-success "> প্রোফাইল দেখুন </Link>
                     </div>
                 </div>

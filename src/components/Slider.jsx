@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { BloodDonorsContext } from "../context/BloodDonorsContext";
+import donorIcon from '../assets/images/donor-icon.png'
 
 export default function Slider() {
 
@@ -13,12 +14,14 @@ export default function Slider() {
             donors.map((donor, index) => (
             <div key={index} id={`item${index + 1}`} className="carousel-item w-full">
                 <div className="flex gap-3 items-center bg-white rounded-md p-2 w-full">
-                    <img src={donor.image} class="w-24 h-24 rounded-full" />
+                    {
+                      donor.image?  <img src={donor.image} class="w-24 h-24 rounded-full" /> :  <img src={donorIcon} class="w-24 h-24 rounded-full" />
+                    }
                     <div className="info">
-                        <h1 className="font-bold"> {donor.name} </h1>
-                        <p className="text-sm"> {donor.current_address} </p>
-                        <p className="text-sm"> রক্তের গ্রুপ: {donor.blood_group} </p>
-                        <p className="text-sm"> সর্বশেষ রক্তদান: {donor.last_donation} </p>
+                        <h1 className="font-bold"> {donor.donorName} </h1>
+                        <p className="text-sm"> {donor.currentAddress} </p>
+                        <p className="text-sm"> রক্তের গ্রুপ: {donor.bloodGroup} </p>
+                        <p className="text-sm"> সর্বশেষ রক্তদান: {donor.lastDonation} </p>
                     </div>
                 </div>
             </div>
