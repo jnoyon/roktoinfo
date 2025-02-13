@@ -22,6 +22,7 @@ import AuthProvider from './firebase/AuthProvider';
 import Register from './auth/Register';
 import PrivateRoute from './auth/PrivateRoute';
 import BloodRequest from './pages/BloodRequest';
+import BloodGroupDonors from './pages/bloodGroupDonors';
 
 const router = createBrowserRouter([
   {
@@ -64,8 +65,8 @@ const router = createBrowserRouter([
 
       },
       {
-        path: "/ap",
-        element: <APositive></APositive>
+        path: "/group/:group",
+      element: <BloodGroupDonors></BloodGroupDonors>
       },
       {
         path: "/about",

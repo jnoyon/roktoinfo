@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import donorIcon from '../assets/images/donor-icon.png'
@@ -6,11 +6,18 @@ import donorIcon from '../assets/images/donor-icon.png'
 const notify = () => toast.success("রক্তদাতার লিংক কপি করা হয়েছে!")
 
 export default function DonorDetails() {
+  const [donor, setDonor] = useState(null);
+  const loaderData = useLoaderData();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setDonor(loaderData);
+    }, 500); // Simulate slight delay for smoother transition
+  }, [loaderData]);
   const handleCopyLink = () => {
     navigator.clipboard.writeText(permalink);
     notify();
   }
-  const donor = useLoaderData();
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -32,6 +39,23 @@ export default function DonorDetails() {
     return diffDays;
   };
   
+  if (!donor) {
+    return (
+      <div className="card w-11/12 md:w-1/3 mx-auto bg-base-100 shadow-sm p-3 text-center my-10">
+        <div className="skeleton h-28 w-28 rounded-full mx-auto"></div>
+        <div className="skeleton h-4 w-40 mx-auto mt-2"></div>
+        <div className="skeleton h-4 w-56 mx-auto mt-1"></div>
+        <div className="skeleton h-4 w-40 mx-auto mt-2"></div>
+        <div className="skeleton h-4 w-32 mx-auto mt-1"></div>
+        <div className="skeleton h-4 w-40 mx-auto mt-2"></div>
+        <div className="skeleton h-4 w-32 mx-auto mt-1"></div>
+        <div className="skeleton h-4 w-40 mx-auto mt-2"></div>
+        <div className="skeleton h-4 w-32 mx-auto mt-1"></div>
+        <div className="skeleton h-4 w-full mx-auto mt-1"></div>
+        <div className="skeleton h-8 w-20 mx-auto mt-2"></div>
+      </div>
+    );
+  }
 
   const donorId = donor?._id;  // Extract donor ID
   const permalink = `https://rokto.info/${donorId}`; 
