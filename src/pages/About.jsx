@@ -11,7 +11,7 @@ export default function About() {
         <figure className="px-10 pt-10">
             <img
             src="https://rokto.xyz/wp-content/uploads/2024/07/1720365208958-2.jpg"
-            class="rounded-xl" />
+            className="rounded-xl" />
         </figure>
         <div className="card-body items-center text-center">
             <h2 className="card-title"> জিহাদুর রহমান নয়ন </h2>

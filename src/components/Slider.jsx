@@ -10,12 +10,24 @@ export default function Slider() {
   return (
     <div className="my-5 w-11/12 mx-auto">
       <div className="carousel w-full shadow-sm rounded-md">
-        {
+
+      {
+        loading ? (<div className="flex bg-white w-full rounded-md p-2 flex-col gap-4">
+          <div className="flex items-center gap-4">
+            <div className="skeleton w-24 h-24 rounded-full shrink-0"></div>
+            <div className="flex flex-col gap-4">
+              <div className="skeleton h-4 w-28"></div>
+              <div className="skeleton h-4 w-28"></div>
+              <div className="skeleton h-4 w-28"></div>
+            </div>
+          </div>
+        </div>) : 
+      
             donors.map((donor, index) => (
             <div key={index} id={`item${index + 1}`} className="carousel-item w-full">
                 <div className="flex gap-3 items-center bg-white rounded-md p-2 w-full">
                     {
-                      donor.image?  <img src={donor.image} class="w-24 h-24 rounded-full" /> :  <img src={donorIcon} class="w-24 h-24 rounded-full" />
+                      donor.image?  <img src={donor.image} className="w-24 h-24 rounded-full" /> :  <img src={donorIcon} className="w-24 h-24 rounded-full" />
                     }
                     <div className="info">
                         <h1 className="font-bold"> {donor.donorName} </h1>

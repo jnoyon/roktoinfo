@@ -36,7 +36,7 @@ export default function Header() {
               <img alt="User" src={user.photoURL} />
             </div>
           </div>
-          <ul tabIndex={0} class="menu menu-sm dropdown-content bg-base-100 gap-2 rounded-box z-1 mt-3 w-52 p-2 shadow">
+          <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 gap-2 rounded-box z-1 mt-3 w-52 p-2 shadow">
             <li> <Link to='/donor'> আপনার প্রোফাইল </Link> </li>
             <li><Link to='/dashboard'> ড্যাশবোর্ড </Link></li>
             <li><Link to='/add'> ডোনার যুক্ত করুন </Link></li>

@@ -58,8 +58,10 @@ const router = createBrowserRouter([
         element: <PrivateRoute> <AddDonor></AddDonor> </PrivateRoute>
       },
       {
-        path: "/donor",
-        element: <DonorDetails></DonorDetails>
+        path: "/:id",
+        element: <DonorDetails></DonorDetails>,
+        loader: ({ params }) => fetch(`https://roktoinfo-server.vercel.app/donors/${params.id}`)
+
       },
       {
         path: "/ap",

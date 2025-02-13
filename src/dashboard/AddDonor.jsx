@@ -145,6 +145,7 @@ export default function AddDonor() {
             value={bloodGroup}
             onChange={(e) => setBloodGroup(e.target.value)}
           >
+            <option>বাছাই করুন</option>
             <option>A+</option>
             <option>B+</option>
             <option>O+</option>

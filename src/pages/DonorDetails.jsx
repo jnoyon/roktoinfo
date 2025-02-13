@@ -1,12 +1,40 @@
 import React from "react";
+import { useLoaderData } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
+import donorIcon from '../assets/images/donor-icon.png'
+
 const notify = () => toast.success("রক্তদাতার লিংক কপি করা হয়েছে!")
 
 export default function DonorDetails() {
   const handleCopyLink = () => {
-    
+    navigator.clipboard.writeText(permalink);
     notify();
   }
+  const donor = useLoaderData();
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+  const calculateDaysAgo = (dateString) => {
+    const lastDonationDate = new Date(dateString);
+    const today = new Date();
+  
+    // Calculate the difference in milliseconds
+    const diffTime = today - lastDonationDate;
+  
+    // Convert milliseconds to days
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  
+    return diffDays;
+  };
+  
+
+  const donorId = donor?._id;  // Extract donor ID
+  const permalink = `https://rokto.info/${donorId}`; 
   return (
     <div className="mt-5">
       <ToastContainer
@@ -23,9 +51,10 @@ export default function DonorDetails() {
       />
       <div className="card w-11/12 md:w-1/3 mx-auto bg-base-100 shadow-sm p-3">
         <div className="text-center">
-          <img src="https://rokto.xyz/wp-content/uploads/2024/07/1720365208958-2.jpg" className="w-28 h-28 rounded-md mb-2 mx-auto" alt="Donor" />
-          <h2 className="text-lg font-bold">জিহাদুর রহমান নয়ন</h2>
-          <p className="text-sm text-gray-600 mb-1"> রক্তের গ্রুপ: AB+ (মোট রক্তদান: 4 বার) <br /> সর্বশেষ: 20/09/24 (মোট রক্তদান: 120 দিন আগে)</p>
+          {donor.image? <img src={donor.image} className="w-28 h-28 rounded-md mb-2 mx-auto" alt="Donor" /> : <img src={donorIcon} className="w-28 h-28 rounded-md mb-2 mx-auto" alt="Donor" /> } 
+          <h2 className="text-lg font-bold"> {donor.donorName} </h2>
+          {donor.profession && <p className="text-sm text-gray-600 mb-1"> {donor.profession }  </p>}
+          <p className="text-sm text-gray-600 mb-1"> রক্তের গ্রুপ: {donor.bloodGroup} (মোট রক্তদান: {donor.totalDonation} বার) <br /> সর্বশেষ: {formatDate(donor.lastDonation)} ( {calculateDaysAgo(donor.lastDonation)} দিন আগে)</p>
           <div className="action my-2 gap-2 flex justify-center"> 
             <button className="btn btn-xs btn-error text-white" onClick={()=>document.getElementById('my_modal_1').showModal()}> রক্তদানের তথ্য আপডেট </button>
             <button className="btn btn-xs btn-accent text-white"> প্রোফাইল এডিট </button>
@@ -56,27 +85,32 @@ export default function DonorDetails() {
           </div>
         </div>
         <ul className="text-sm">
-          <li className="border-b border-gray-300 py-2">
-              <span> নিকটস্থ রক্তদান এলাকা: </span> ভালুকা
+          { donor.location &&
+              <li className="border-b border-gray-300 py-2">
+              <span> নিকটস্থ রক্তদান এলাকা: </span> {donor.location}
           </li>
+          }
+          {donor.fatherName && <li className="border-b border-gray-300 py-1.5">
+              <span> পিতার নাম: </span> {donor.fatherName}
+          </li>}
           <li className="border-b border-gray-300 py-1.5">
-              <span> পিতার নাম: </span> আনোয়ার হোসেন
+              <span> মোবাইল: </span> <span> {donor.mobileNumber} </span> {donor.altMobileNumber && <span> অথবা <span> {donor.altMobileNumber} </span> </span>}
           </li>
-          <li className="border-b border-gray-300 py-1.5">
-              <span> মোবাইল: </span> <a href="tel:01619756262"> 01619756262 </a> <span> অথবা <a href="tel:01619756262"> 01619756262 </a> </span>
-          </li>
-          <li className="border-b border-gray-300 py-1.5"> <span> বর্তমান ঠিকানা: </span> ভালুকা </li>
-          <li className=" py-1.5"> <span> নিকটস্থ রক্তদান এলাকা: </span> ভালুকা </li>
+          <li className="border-b border-gray-300 py-1.5"> <span> বর্তমান ঠিকানা: </span> {donor.currentAddress} </li>
+          {donor.permanentAddress && <li className="border-b border-gray-300 py-1.5"> <span> বর্তমান ঠিকানা: </span> {donor.permanentAddress} </li>}
+          {donor.weight && <li className="border-b border-gray-300 py-1.5"> <span> রক্তদাতার ওজন: </span> {donor.weight}  </li>}
+
           <li className="border border-gray-300 flex justify-between">
-            <p> <span className="border-r border-gray-300 py-1.5 px-2 inline-block"> লিংক </span>  <span> https://rokto.info/152 </span> </p>
+            <p> <span className="border-r border-gray-300 py-1.5 px-2 inline-block"> লিংক </span>  <span> {donorId} </span> </p>
             <button className="bg-gray-200 px-2 py-1.5 cursor-pointer hover:bg-green-300" onClick={handleCopyLink}> কপি করুন </button>
           </li>
           <span className="text-xs"> লিংক করি করে শেয়ার করা যাবে। </span>
         </ul>
         <div className="mt-2 flex gap-2 justify-center">
-          <a className="btn btn-primary ">কল করুন</a>
-          <a className="btn btn-success "> WhatsApp </a>
-        </div>
+          <a className="btn btn-primary" href={`tel:${donor.mobileNumber}`}>কল করুন</a>
+          {donor.whatsappNumber && <a className="btn btn-success" href={`https://wa.me/${donor.mobileNumber}`} target="_blank" rel="noopener noreferrer"> WhatsApp </a>}
+      </div>
+
       </div>
     </div>
   );
