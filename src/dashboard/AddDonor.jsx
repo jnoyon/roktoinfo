@@ -9,6 +9,7 @@ export default function AddDonor() {
   const [permanentAddress, setPermanentAddress] = useState('');
   const [bloodGroup, setBloodGroup] = useState('');
   const [lastDonation, setLastDonation] = useState('');
+  const [totalDonation, setTotalDonation] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
   const [altMobileNumber, setAltMobileNumber] = useState('');
   const [weight, setWeight] = useState('');
@@ -46,6 +47,7 @@ export default function AddDonor() {
       organization,
       image,
       locations,
+      totalDonation,
       donorAuthor
     };
     
@@ -161,6 +163,19 @@ export default function AddDonor() {
             name="last_donation"
             value={lastDonation}
             onChange={(e) => setLastDonation(e.target.value)}
+          />
+        </label>
+
+        <label className="floating-label">
+          <span> মোট রক্তদান *</span>
+          <input
+            type="number"
+            name="total_donation"
+            placeholder="Your mobile number"
+            className="input input-md w-full"
+            value={totalDonation}
+            onChange={(e) => setTotalDonation(e.target.value)}
+            required
           />
         </label>
 
