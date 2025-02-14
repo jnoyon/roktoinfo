@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import donorIcon from '../assets/images/donor-icon.png'
+import { BloodDonorsContext } from "../context/BloodDonorsContext";
 
 const notify = () => toast.success("রক্তদাতার লিংক কপি করা হয়েছে!")
+const updated = () => toast.success("রক্তদাতার তথ্য আপডেট করা হয়েছে")
 
 export default function DonorDetails() {
   const [donor, setDonor] = useState(null);
   const loaderData = useLoaderData();
+  const {user, loading} = useContext(BloodDonorsContext);
 
   useEffect(() => {
     setTimeout(() => {
@@ -59,10 +62,14 @@ export default function DonorDetails() {
 
   const donorId = donor?._id;  // Extract donor ID
   const permalink = `https://rokto.info/${donorId}`; 
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+    updated();
+  }
   return (
     <div className="mt-5">
       <ToastContainer
-      position="bottom-center"
+      position="bottom-right"
       autoClose={1000}
       hideProgressBar={false}
       newestOnTop={false}
@@ -73,30 +80,29 @@ export default function DonorDetails() {
       pauseOnHover
       theme="light"
       />
+      
       <div className="card w-11/12 md:w-1/3 mx-auto bg-base-100 shadow-sm p-3">
         <div className="text-center">
           {donor.image? <img src={donor.image} className="w-28 h-28 rounded-md mb-2 mx-auto" alt="Donor" /> : <img src={donorIcon} className="w-28 h-28 rounded-md mb-2 mx-auto" alt="Donor" /> } 
           <h2 className="text-lg font-bold"> {donor.donorName} </h2>
           {donor.profession && <p className="text-sm text-gray-600 mb-1"> {donor.profession }  </p>}
           <p className="text-sm text-gray-600 mb-1"> রক্তের গ্রুপ: {donor.bloodGroup} (মোট রক্তদান: {donor.totalDonation} বার) <br /> সর্বশেষ: {formatDate(donor.lastDonation)} ( {calculateDaysAgo(donor.lastDonation)} দিন আগে)</p>
-          <div className="action my-2 gap-2 flex justify-center"> 
+          { <div className="action my-2 gap-2 flex justify-center"> 
             <button className="btn btn-xs btn-error text-white" onClick={()=>document.getElementById('my_modal_1').showModal()}> রক্তদানের তথ্য আপডেট </button>
             <button className="btn btn-xs btn-accent text-white"> প্রোফাইল এডিট </button>
-
-
               <dialog id="my_modal_1" className="modal">
                 <div className="modal-box">
                   <h3 className="font-bold text-lg mb-3">রক্তদানের তথ্য আপডেট!</h3>
-                  <form className="flex flex-col gap-2">
-                  <label className="input">
+                  <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+                  <label className="input w-full">
                     <span className="label">সর্বশেষ রক্তদান</span>
-                    <input type="date" />
+                    <input type="date" defaultValue={donor.lastDonation} />
                   </label>
-                  <label className="input">
+                  <label className="input w-full">
                     <span className="label">মোট রক্তদান</span>
-                    <input type="number" />
+                    <input type="number" defaultValue={donor.totalDonation} />
                   </label>
-                  <input type="submit" className="btn btn-accent" value="আপডেট করুন" />
+                  <input type="submit" className="btn btn-error text-white" value="আপডেট করুন" />
                   </form>
                   <div className="modal-action">
                     <form method="dialog">
@@ -105,8 +111,8 @@ export default function DonorDetails() {
                   </div>
                 </div>
               </dialog>
+          </div>}
 
-          </div>
         </div>
         <ul className="text-sm">
           { donor.location &&

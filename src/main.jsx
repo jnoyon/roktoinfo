@@ -14,7 +14,6 @@ import Login from './auth/Login';
 import AddDonor from './dashboard/AddDonor';
 import DonorDetails from './pages/DonorDetails';
 import { BloodDonorsProvider } from './context/BloodDonorsContext';
-import APositive from './bloodgroups/APositive';
 import About from './pages/About';
 import Credit from './pages/Credit';
 import Dashboard from './dashboard/Dashboard';
@@ -34,10 +33,7 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home></Home>
       },
-      {
-        path: "/find",
-        element: <FindBlood></FindBlood>
-      },
+      
       {
         path: "/more",
         element: <More></More>

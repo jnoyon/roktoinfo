@@ -12,16 +12,38 @@ export default function Dashboard() {
   const {donors} = useContext(BloodDonorsContext);
   const {user} = useContext(authContext);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+  const calculateDaysAgo = (dateString) => {
+    const lastDonationDate = new Date(dateString);
+    const today = new Date();
+  
+    // Calculate the difference in milliseconds
+    const diffTime = today - lastDonationDate;
+  
+    // Convert milliseconds to days
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  
+    return diffDays;
+  };
+  
+
   const handleDelete = (id) => {
     console.log(id);
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "রক্তদাতা মুছে ফেলতে চান?",
+      text: "এটা মুছে ফেললে রক্ত ডট ইনফো তে এই প্রোফাইল আর দেখাবে না!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "হ্যাঁ, মুছে ফেলতে চাই!",
+      'cancelButtonText': "না"
     }).then((result) => {
       if (result.isConfirmed) {
         
@@ -34,8 +56,8 @@ export default function Dashboard() {
           console.log(data)
           if(data.deletedCount > 0){
             Swal.fire({
-              title: "Deleted!",
-              text: "Your file has been deleted.",
+              title: "মুছে ফেলা হয়েছে!",
+              text: "রক্তদাতা মুছে ফেলা হয়েছে",
               icon: "success"
             });
           }
@@ -59,13 +81,12 @@ export default function Dashboard() {
              {donor.image?  <img src={donor.image} alt="Icon" className="w-16 rounded-2xl" /> :  <img src={donorIcon} alt="Icon" className="w-16 rounded-2xl" />}  
               <div className="flex flex-col gap-1">
                 <h2 className="font-bold text-sm"> {donor.donorName} </h2>
-                <p className="text-xs text-gray-600"> {donor.currentAddress} </p>
-                <p className="text-xs text-gray-600 flex items-center gap-1"> <MdChangeCircle className="text-red-400" /> {donor.lastDonation} তারিখে রক্তদান করেছেন। </p>
+                <p className="text-xs text-gray-600 mb-1"> রক্তের গ্রুপ: {donor.bloodGroup} (মোট রক্তদান: {donor.totalDonation} বার) <br /> সর্বশেষ: {formatDate(donor.lastDonation)} ( {calculateDaysAgo(donor.lastDonation)} দিন আগে)</p>
               </div>
             </div>
             <div className="flex gap-2">
-              <Link to='/' className="bg-green-400 px-2 py-1 cursor-pointer rounded-md text-white"> <CiEdit /> </Link> 
-              <button className="bg-red-400 px-2 py-1 cursor-pointer rounded-md text-white" onClick={() => handleDelete(donor._id)}> <MdCancel /> </button>
+              <Link to={`../${donor._id}`} className="bg-green-400 px-2 py-1 cursor-pointer rounded-md text-white text-xs"> <CiEdit className="mx-auto mb-0.5" /> <span> এডিট </span> </Link> 
+              <button className="bg-red-400 px-2 py-1 cursor-pointer rounded-md text-white text-xs" onClick={() => handleDelete(donor._id)}> <MdCancel  className="mx-auto mb-0.5"  /> <span> ডিলিট </span> </button>
             </div>
           </li>
         ))}

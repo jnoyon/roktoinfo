@@ -1,24 +1,27 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-
+import { IoIosHome } from "react-icons/io";
+import { MdBloodtype } from "react-icons/md";
+import { CgMoreR } from "react-icons/cg";
 export default function Footer() {
   return (
     <div className="mt-20">
-      <div className="dock bg-neutral text-neutral-content">
+      <div className="dock bg-red-400 text-white">
+      <NavLink to='/request'>
+      <MdBloodtype className="text-xl mb-0.5" />
+        <span className="dock-label font-bold"> ব্লাড রিকুয়েস্ট </span>
+      </NavLink>
+
         <NavLink to='/'>
-        
-          <span className="dock-label">হোম</span>
+        <IoIosHome className="text-xl mb-0.5"  />
+          <span className="dock-label font-bold">হোম</span>
         </NavLink>
 
-        <NavLink to='/find'>
+        <NavLink to='/more'>
+        <CgMoreR className="text-xl mb-0.5"  />
+        <span className="dock-label font-bold">আরও</span>
+      </NavLink>
         
-          <span className="dock-label">রক্ত খুঁজুন</span>
-        </NavLink>
-
-        <NavLink to='/request'>
-        
-          <span className="dock-label"> ব্লাড রিকুয়েক্ট </span>
-        </NavLink>
       </div>
     </div>
   );
