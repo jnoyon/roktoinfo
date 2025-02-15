@@ -3,6 +3,8 @@ import { useLoaderData } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import donorIcon from '../assets/images/donor-icon.png'
 import { BloodDonorsContext } from "../context/BloodDonorsContext";
+import { authContext } from "../firebase/AuthProvider";
+import { Helmet } from "react-helmet-async";
 
 const notify = () => toast.success("রক্তদাতার লিংক কপি করা হয়েছে!")
 const updated = () => toast.success("রক্তদাতার তথ্য আপডেট করা হয়েছে")
@@ -10,7 +12,8 @@ const updated = () => toast.success("রক্তদাতার তথ্য �
 export default function DonorDetails() {
   const [donor, setDonor] = useState(null);
   const loaderData = useLoaderData();
-  const {user, loading} = useContext(BloodDonorsContext);
+  const {loading} = useContext(BloodDonorsContext);
+  const {user} = useContext(authContext);
 
   useEffect(() => {
     setTimeout(() => {
@@ -41,6 +44,8 @@ export default function DonorDetails() {
   
     return diffDays;
   };
+
+  
   
   if (!donor) {
     return (
@@ -66,6 +71,16 @@ export default function DonorDetails() {
     e.preventDefault();
     updated();
   }
+
+  const getLocations = (locations) => {
+    if (!locations) return "তথ্য পাওয়া যায়নি";
+    return Object.keys(locations)
+      .filter((key) => locations[key]) // Get only locations that are `true`
+      .map((loc) => loc.charAt(0).toUpperCase() + loc.slice(1)) // Capitalize first letter
+      .join(", ");
+  };
+  
+
   return (
     <div className="mt-5">
       <ToastContainer
@@ -80,14 +95,17 @@ export default function DonorDetails() {
       pauseOnHover
       theme="light"
       />
-      
+      <Helmet>
+        <title> {donor.donorName } - রক্ত ডট ইনফো </title>
+      </Helmet>
       <div className="card w-11/12 md:w-1/3 mx-auto bg-base-100 shadow-sm p-3">
         <div className="text-center">
+          
           {donor.image? <img src={donor.image} className="w-28 h-28 rounded-md mb-2 mx-auto" alt="Donor" /> : <img src={donorIcon} className="w-28 h-28 rounded-md mb-2 mx-auto" alt="Donor" /> } 
           <h2 className="text-lg font-bold"> {donor.donorName} </h2>
           {donor.profession && <p className="text-sm text-gray-600 mb-1"> {donor.profession }  </p>}
           <p className="text-sm text-gray-600 mb-1"> রক্তের গ্রুপ: {donor.bloodGroup} (মোট রক্তদান: {donor.totalDonation} বার) <br /> সর্বশেষ: {formatDate(donor.lastDonation)} ( {calculateDaysAgo(donor.lastDonation)} দিন আগে)</p>
-          { <div className="action my-2 gap-2 flex justify-center"> 
+          {user&& <div className="action my-2 gap-2 flex justify-center"> 
             <button className="btn btn-xs btn-error text-white" onClick={()=>document.getElementById('my_modal_1').showModal()}> রক্তদানের তথ্য আপডেট </button>
             <button className="btn btn-xs btn-accent text-white"> প্রোফাইল এডিট </button>
               <dialog id="my_modal_1" className="modal">
@@ -115,11 +133,7 @@ export default function DonorDetails() {
 
         </div>
         <ul className="text-sm">
-          { donor.location &&
-              <li className="border-b border-gray-300 py-2">
-              <span> নিকটস্থ রক্তদান এলাকা: </span> {donor.location}
-          </li>
-          }
+          
           {donor.fatherName && <li className="border-b border-gray-300 py-1.5">
               <span> পিতার নাম: </span> {donor.fatherName}
           </li>}
@@ -127,13 +141,14 @@ export default function DonorDetails() {
               <span> মোবাইল: </span> <span> {donor.mobileNumber} </span> {donor.altMobileNumber && <span> অথবা <span> {donor.altMobileNumber} </span> </span>}
           </li>
           <li className="border-b border-gray-300 py-1.5"> <span> বর্তমান ঠিকানা: </span> {donor.currentAddress} </li>
-          {donor.permanentAddress && <li className="border-b border-gray-300 py-1.5"> <span> বর্তমান ঠিকানা: </span> {donor.permanentAddress} </li>}
+          {donor.permanentAddress && <li className="border-b border-gray-300 py-1.5"> <span> স্থায়ী ঠিকানা: </span> {donor.permanentAddress} </li>}
           {donor.weight && <li className="border-b border-gray-300 py-1.5"> <span> রক্তদাতার ওজন: </span> {donor.weight}  </li>}
-
+          { <li className=" py-1.5"> <span> নিকটস্থ রক্তদান এলাকা: </span>{getLocations(donor.locations)}  </li>}
           <li className="border border-gray-300 flex justify-between">
             <p> <span className="border-r border-gray-300 py-1.5 px-2 inline-block"> লিংক </span>  <span> {donorId} </span> </p>
             <button className="bg-gray-200 px-2 py-1.5 cursor-pointer hover:bg-green-300" onClick={handleCopyLink}> কপি করুন </button>
           </li>
+          
           <span className="text-xs"> লিংক করি করে শেয়ার করা যাবে। </span>
         </ul>
         <div className="mt-2 flex gap-2 justify-center">

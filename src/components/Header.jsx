@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import logo from '../assets/images/logo.png'
 import { useContext } from 'react'
 import { authContext } from '../firebase/AuthProvider'
+import { FaBarsStaggered } from "react-icons/fa6";
 export default function Header() {
 
   const {user, UserSignOut} = useContext(authContext);
@@ -14,9 +15,13 @@ export default function Header() {
       console.log('logout')
     })
   }
+
+  const closeDrawer = () => {
+    document.getElementById('my-drawer').checked = false;
+  };
   
 
-  
+  console.log(user)
   return (
     <div className='bg-base-100 shadow-sm sticky top-0 z-50'>
         <div className="navbar  mx-auto w-11/12">
@@ -25,25 +30,27 @@ export default function Header() {
         </div>
         <div className="flex-none">
           
-          {
-            user? <div className="dropdown dropdown-end gap-2 flex">
-            <div className="inline-grid *:[grid-area:1/1]">
-              <div className="status status-error animate-ping"></div>
-              <div className="status status-error"></div>
-            </div>
-          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-            <div className="w-10 rounded-full">
-              <img alt="User" src={user.photoURL} />
-            </div>
+        <div className="drawer">
+          <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+          <div className="drawer-content">
+            <label htmlFor="my-drawer" className="btn btn-error drawer-button text-white"> <FaBarsStaggered /> </label>
           </div>
-          <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 gap-2 rounded-box z-1 mt-3 w-52 p-2 shadow">
-            <li> <Link to='/donor'> আপনার প্রোফাইল </Link> </li>
-            <li><Link to='/dashboard'> ড্যাশবোর্ড </Link></li>
-            <li><Link to='/add'> ডোনার যুক্ত করুন </Link></li>
-            <li><button onClick={handleLogout}>লগআউট করুন</button></li>
-          </ul>
-        </div>  : <Link to='/login' className='border border-gray-300 px-2 rounded-md py-1'> লগইন করুন </Link>
-          }
+          <div className="drawer-side">
+            <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
+            {user? <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4 flex flex-col gap-2">
+              <li onClick={closeDrawer}><Link to='/dashboard'> ড্যাশবোর্ড </Link></li>
+              <li onClick={closeDrawer}> <Link to='/add'> ডোনার যুক্ত করুন </Link></li>
+              <li onClick={closeDrawer}><button onClick={handleLogout}>লগআউট করুন</button></li>
+            </ul> :
+            <ul className='menu bg-base-200 text-base-content min-h-full w-80 p-4'>
+              <li onClick={closeDrawer}> <Link to='/login' className='px-2 rounded-md py-1'> লগইন করুন </Link> </li>
+            </ul>
+            }
+          </div>
+        </div>
+
+
+
         </div>
       </div>
     </div>

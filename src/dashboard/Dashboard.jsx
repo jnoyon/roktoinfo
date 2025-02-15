@@ -66,6 +66,16 @@ export default function Dashboard() {
     });
   }
 
+  // Filter donors by the current user's email (only show the donors added by the logged-in user)
+  const filteredDonors = donors.filter(donor => donor.donorAuthor === user.email);
+
+  if (filteredDonors.length === 0) {
+    return <div className="bg-white p-5 mx-auto w-11/12 text-center rounded-md my-5 shadow">
+      <p className="mb-2"> আপনার প্রোফাইলের কোন রক্তদাতা নেই। </p>
+      <Link to='/add' className="btn btn-error text-white"> রক্তদাতা যুক্ত করুন </Link>
+    </div>;
+  }
+ 
   return (
     <div className="mx-auto w-11/12 py-5">
 
@@ -75,7 +85,8 @@ export default function Dashboard() {
         </div>
         <ul className="bg-white rounded-md">
 
-        {donors.map((donor, index) => (
+        {filteredDonors.map((donor, index) => (
+          
           <li className="flex items-center justify-between p-2 border-b border-gray-300" key={index}> 
             <div className="flex gap-2">
              {donor.image?  <img src={donor.image} alt="Icon" className="w-16 rounded-2xl" /> :  <img src={donorIcon} alt="Icon" className="w-16 rounded-2xl" />}  

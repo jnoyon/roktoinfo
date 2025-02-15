@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { BloodDonorsContext } from '../context/BloodDonorsContext';
 import { Link } from 'react-router-dom';
 import donorIcon from '../assets/images/donor-icon.png';
+import { Helmet } from 'react-helmet-async';
 
 export default function BloodGroupDonors() {
   const { donors, loading } = useContext(BloodDonorsContext);
@@ -53,7 +54,9 @@ export default function BloodGroupDonors() {
       </div> */}
 
       <h2 className="text-center text-2xl font-bold mb-5 divider divider-error text-error">{bloodGroup} রক্তদাতা</h2>
-
+      <Helmet>
+        <title> {bloodGroup} গ্রুপের রক্তদাতা - রক্ত ডট ইনফো </title>
+      </Helmet>
       <div className="grid md:grid-cols-3 gap-5">
         {loading ? (
           <div className="flex flex-col gap-3 text-center bg-white rounded-md p-5 w-full">

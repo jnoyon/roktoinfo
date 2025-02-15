@@ -27,10 +27,49 @@ export default function AddDonor() {
     others: false,
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const donorAuthor = user.email;
+  
+    // Upload image to Imgbb
+    let imageUrl = '';
+  
+    if (image) {
+      const formData = new FormData();
+      formData.append('image', image);
+  
+      try {
+        const res = await fetch(`https://api.imgbb.com/1/upload?key=b64625db3d56051aaa18e46f8af34129`, {
+          method: 'POST',
+          body: formData,
+        });
+  
+        const data = await res.json();
+        
+        if (data.success) {
+          imageUrl = data.data.url; // Use the image URL returned by Imgbb
+        } else {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Failed to upload image',
+            icon: 'error',
+            confirmButtonText: 'OK',
+          });
+          return; // Stop the form submission if image upload fails
+        }
+      } catch (error) {
+        console.error('Image upload error:', error);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Something went wrong with the image upload',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+        return; // Stop the form submission if an error occurs
+      }
+    }
+  
     // Collecting data from the form
     const donor = {
       donorName,
@@ -45,42 +84,51 @@ export default function AddDonor() {
       profession,
       dob,
       organization,
-      image,
+      image: imageUrl,  // Use the uploaded image URL
       locations,
       totalDonation,
       donorAuthor
     };
-    
-    // You can process the donor data here (e.g., send it to an API)
-
-    fetch('https://roktoinfo-server.vercel.app/donors',{
+  
+    // Sending donor data to your backend API
+    fetch('https://roktoinfo-server.vercel.app/donors', {
       method: 'POST',
       headers: {
-        'content-type' : 'application/json'
+        'content-type': 'application/json',
       },
-      body: JSON.stringify(donor)
+      body: JSON.stringify(donor),
     })
-    .then(res=> res.json())
-    .then(data=> {
-      if(data.insertedId){
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          Swal.fire({
+            title: 'অভিনন্দন!',
+            text: 'আপনার প্রোফাইল যুক্ত করা হয়েছে',
+            icon: 'success',
+            confirmButtonText: 'ওকে',
+          });
+        } else {
+          Swal.fire({
+            title: 'ত্রুটি!',
+            text: 'প্রোফাইল যুক্ত করা সম্ভব হয়নি',
+            icon: 'error',
+            confirmButtonText: 'ওকে',
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
         Swal.fire({
-          title: 'অভিনন্দন!',
-          text: 'আপনার প্রোফাইল যুক্ত করা হয়েছে',
-          icon: 'success',
-          confirmButtonText: 'ওকে'
-        })
-      }
-      else{
-        Swal.fire({
-          title: 'অভিনন্দন!',
-          text: 'আপনার প্রোফাইল যুক্ত করা হয়েছে',
+          title: 'Error!',
+          text: 'Something went wrong while saving data.',
           icon: 'error',
-          confirmButtonText: 'ওকে'
-        })
-      }
-    })
-
+          confirmButtonText: 'OK',
+        });
+      });
+  
+    e.target.reset();
   };
+  
 
   const handleLocationChange = (e) => {
     const { name, checked } = e.target;
@@ -91,6 +139,15 @@ export default function AddDonor() {
     <div className='w-11/12 mx-auto py-5'>
       <h2 className='text-lg font-bold divider'>রক্তদাতার প্রোফাইল তৈরি করুন</h2>
       <form className='w-full flex flex-col gap-5 bg-white p-2' onSubmit={handleSubmit}>
+      <fieldset className="fieldset">
+          <legend className="fieldset-legend">রক্তদাতার ছবি</legend>
+          <input
+            type="file"
+            className="file-input w-full"
+            onChange={(e) => setImage(e.target.files[0])}
+          />
+          <label className="fieldset-label">স্কয়ার সাইজের ছবি হলে ভাল হয়</label>
+        </fieldset>
         <label className="floating-label">
           <span>নাম *</span>
           <input
@@ -193,15 +250,7 @@ export default function AddDonor() {
           />
         </label>
 
-        <fieldset className="fieldset">
-          <legend className="fieldset-legend">রক্তদাতার ছবি</legend>
-          <input
-            type="file"
-            className="file-input"
-            onChange={(e) => setImage(e.target.files[0])}
-          />
-          <label className="fieldset-label">স্কয়ার সাইজের ছবি হলে ভাল হয়</label>
-        </fieldset>
+        
 
         <fieldset className="fieldset p-4 bg-base-100 border border-base-300 flex flex-wrap gap-2 rounded-box">
           <legend className="fieldset-legend">নিকটস্থ রক্তদান এলাকা</legend>
@@ -273,7 +322,7 @@ export default function AddDonor() {
         </label>
 
         <label className="floating-label">
-          <span>সংগঠন *</span>
+          <span>সংগঠন</span>
           <input
             type="text"
             name="donor_name"

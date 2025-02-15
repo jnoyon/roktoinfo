@@ -22,7 +22,7 @@ import Register from './auth/Register';
 import PrivateRoute from './auth/PrivateRoute';
 import BloodRequest from './pages/BloodRequest';
 import BloodGroupDonors from './pages/bloodGroupDonors';
-
+import { HelmetProvider } from 'react-helmet-async';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -84,7 +84,9 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BloodDonorsProvider>
       <AuthProvider>
+        <HelmetProvider>
         <RouterProvider router={router} />
+        </HelmetProvider>
       </AuthProvider>
     </BloodDonorsProvider>
   </StrictMode>
