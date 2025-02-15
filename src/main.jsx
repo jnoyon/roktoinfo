@@ -23,6 +23,8 @@ import PrivateRoute from './auth/PrivateRoute';
 import BloodRequest from './pages/BloodRequest';
 import BloodGroupDonors from './pages/bloodGroupDonors';
 import { HelmetProvider } from 'react-helmet-async';
+import Terms from './pages/Terms';
+import Moderators from './pages/Moderators';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -69,8 +71,16 @@ const router = createBrowserRouter([
         element: <About></About>
       },
       {
+        path: "/terms",
+        element: <Terms></Terms>
+      },
+      {
         path: "/credit",
         element: <Credit></Credit>
+      },
+      {
+        path: "/support",
+        element:  <Moderators></Moderators> 
       },
       {
         path: "/dashboard",

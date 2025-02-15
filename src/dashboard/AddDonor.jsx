@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { authContext } from '../firebase/AuthProvider';
 import Swal from 'sweetalert2'
+import imageCompression from 'browser-image-compression';
 export default function AddDonor() {
   const {user} = useContext(authContext);
   const [donorName, setDonorName] = useState('');
@@ -40,7 +41,18 @@ export default function AddDonor() {
       formData.append('image', image);
   
       try {
-        const res = await fetch(`https://api.imgbb.com/1/upload?key=b64625db3d56051aaa18e46f8af34129`, {
+        const options = {
+          maxSizeMB: 0.1, // 100KB
+          maxWidthOrHeight: 150, // Resize to 150px max width or height
+          useWebWorker: true,
+        };
+          // Compress and resize the image
+          const compressedImage = await imageCompression(image, options);
+
+          
+          formData.append('image', compressedImage);
+          const imgbbApiKey = import.meta.env.VITE_IMGBB_API_KEY;
+          const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbApiKey}`, {
           method: 'POST',
           body: formData,
         });
@@ -107,6 +119,26 @@ export default function AddDonor() {
             icon: 'success',
             confirmButtonText: 'ওকে',
           });
+      
+          // Reset form states after successful submission
+          setDonorName('');
+          setFatherName('');
+          setCurrentAddress('');
+          setPermanentAddress('');
+          setBloodGroup('');
+          setLastDonation('');
+          setMobileNumber('');
+          setAltMobileNumber('');
+          setWeight('');
+          setProfession('');
+          setDob('');
+          setOrganization('');
+          setImage(null);
+          setLocations({
+            bhaluka: false, mymensingh: false, mawna: false,
+            gazipur: false, gafargoan: false, dhaka: false, others: false,
+          });
+          setTotalDonation('');
         } else {
           Swal.fire({
             title: 'ত্রুটি!',
@@ -116,6 +148,7 @@ export default function AddDonor() {
           });
         }
       })
+      
       .catch((err) => {
         console.error(err);
         Swal.fire({
@@ -126,7 +159,7 @@ export default function AddDonor() {
         });
       });
   
-    e.target.reset();
+   
   };
   
 
@@ -325,8 +358,8 @@ export default function AddDonor() {
           <span>সংগঠন</span>
           <input
             type="text"
-            name="donor_name"
-            placeholder="Your name"
+            name="organization"
+            placeholder="Your Organizaton"
             className="input input-md w-full"
             value={organization}
             onChange={(e) => setOrganization(e.target.value)}

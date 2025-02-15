@@ -8,6 +8,7 @@ import { Helmet } from "react-helmet-async";
 
 const notify = () => toast.success("রক্তদাতার লিংক কপি করা হয়েছে!")
 const updated = () => toast.success("রক্তদাতার তথ্য আপডেট করা হয়েছে")
+const notUpdated = () => toast.error("আপনি কোন তথ্য পরিবর্তন করেননি")
 
 export default function DonorDetails() {
   const [donor, setDonor] = useState(null);
@@ -20,6 +21,10 @@ export default function DonorDetails() {
       setDonor(loaderData);
     }, 500); // Simulate slight delay for smoother transition
   }, [loaderData]);
+
+
+  const donorId = donor?._id;  // Extract donor ID
+  const permalink = `https://rokto.info/${donorId}`; 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(permalink);
     notify();
@@ -65,12 +70,41 @@ export default function DonorDetails() {
     );
   }
 
-  const donorId = donor?._id;  // Extract donor ID
-  const permalink = `https://rokto.info/${donorId}`; 
-  const handleSubmit = (e) =>{
+  
+  
+  const handleUpdate = (e, id) => {
     e.preventDefault();
-    updated();
-  }
+    const lastDonation = e.target.lastdonation.value;
+    const totalDonation = e.target.totaldonation.value;
+    const updatedDonor = { lastDonation, totalDonation };
+  
+    fetch(`https://roktoinfo-server.vercel.app/donors/${id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(updatedDonor),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.modifiedCount > 0) {
+          updated(); // Show success toast
+          document.getElementById("updateModal").close(); // Close modal
+          setDonor((prev) => ({
+            ...prev,
+            lastDonation,
+            totalDonation,
+          }));
+        }
+        else {
+          notUpdated();
+        }
+      })
+      .catch((error) => console.error("Error updating donor:", error));
+      
+  };
+  
 
   const getLocations = (locations) => {
     if (!locations) return "তথ্য পাওয়া যায়নি";
@@ -79,6 +113,7 @@ export default function DonorDetails() {
       .map((loc) => loc.charAt(0).toUpperCase() + loc.slice(1)) // Capitalize first letter
       .join(", ");
   };
+  
   
 
   return (
@@ -106,19 +141,19 @@ export default function DonorDetails() {
           {donor.profession && <p className="text-sm text-gray-600 mb-1"> {donor.profession }  </p>}
           <p className="text-sm text-gray-600 mb-1"> রক্তের গ্রুপ: {donor.bloodGroup} (মোট রক্তদান: {donor.totalDonation} বার) <br /> সর্বশেষ: {formatDate(donor.lastDonation)} ( {calculateDaysAgo(donor.lastDonation)} দিন আগে)</p>
           {user&& <div className="action my-2 gap-2 flex justify-center"> 
-            <button className="btn btn-xs btn-error text-white" onClick={()=>document.getElementById('my_modal_1').showModal()}> রক্তদানের তথ্য আপডেট </button>
+            <button className="btn btn-xs btn-error text-white" onClick={()=>document.getElementById('updateModal').showModal()}> রক্তদানের তথ্য আপডেট </button>
             <button className="btn btn-xs btn-accent text-white"> প্রোফাইল এডিট </button>
-              <dialog id="my_modal_1" className="modal">
+              <dialog id="updateModal" className="modal">
                 <div className="modal-box">
                   <h3 className="font-bold text-lg mb-3">রক্তদানের তথ্য আপডেট!</h3>
-                  <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+                  <form onSubmit={(e) => handleUpdate(e, donor._id)} className="flex flex-col gap-2">
                   <label className="input w-full">
                     <span className="label">সর্বশেষ রক্তদান</span>
-                    <input type="date" defaultValue={donor.lastDonation} />
+                    <input type="date" name="lastdonation" defaultValue={donor.lastDonation} />
                   </label>
                   <label className="input w-full">
                     <span className="label">মোট রক্তদান</span>
-                    <input type="number" defaultValue={donor.totalDonation} />
+                    <input name="totaldonation" type="number" defaultValue={donor.totalDonation} />
                   </label>
                   <input type="submit" className="btn btn-error text-white" value="আপডেট করুন" />
                   </form>

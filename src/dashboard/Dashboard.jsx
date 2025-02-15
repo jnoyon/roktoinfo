@@ -89,7 +89,7 @@ export default function Dashboard() {
           
           <li className="flex items-center justify-between p-2 border-b border-gray-300" key={index}> 
             <div className="flex gap-2">
-             {donor.image?  <img src={donor.image} alt="Icon" className="w-16 rounded-2xl" /> :  <img src={donorIcon} alt="Icon" className="w-16 rounded-2xl" />}  
+             {donor.image?  <img src={donor.image} alt="Icon" className="w-16 h-16 rounded-2xl" /> :  <img src={donorIcon} alt="Icon" className="w-16 h-16 rounded-2xl" />}  
               <div className="flex flex-col gap-1">
                 <h2 className="font-bold text-sm"> {donor.donorName} </h2>
                 <p className="text-xs text-gray-600 mb-1"> রক্তের গ্রুপ: {donor.bloodGroup} (মোট রক্তদান: {donor.totalDonation} বার) <br /> সর্বশেষ: {formatDate(donor.lastDonation)} ( {calculateDaysAgo(donor.lastDonation)} দিন আগে)</p>

@@ -12,6 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.0.3",
     "axios": "^1.7.9",
+    "browser-image-compression": "^2.0.2",
     "firebase": "^11.3.0",
     "localforage": "^1.10.0",
     "lottie-react": "^2.4.1",

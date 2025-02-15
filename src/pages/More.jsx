@@ -11,10 +11,10 @@ export default function More() {
           <Link to='../about'> <img src={info} alt="Icon" className='mx-auto mb-2' /> আমাদের সম্পর্কে </Link>
         </div>
         <div className="bg-white px-2 py-5  text-center rounded-md shadow-sm">
-          <Link to='../about'> <img src={terms} alt="Icon" className='mx-auto mb-2' /> নীতিমালা </Link>
+          <Link to='../terms'> <img src={terms} alt="Icon" className='mx-auto mb-2' /> নীতিমালা </Link>
         </div>
         <div className="bg-white px-2 py-5  text-center rounded-md shadow-sm">
-          <Link to='../about'> <img src={support} alt="Icon" className='mx-auto mb-2' /> মডারেটর </Link>
+          <Link to='../support'> <img src={support} alt="Icon" className='mx-auto mb-2' /> মডারেটর </Link>
         </div>
         <div className="bg-white px-2 py-5 text-center rounded-md shadow-sm">
           <Link to='../credit'> <img src={link} alt="Icon" className='mx-auto mb-2' /> আইকন ক্রেডিট </Link>
