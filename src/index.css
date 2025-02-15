@@ -19,3 +19,9 @@
   background-color: rgb(255, 255, 255);
   color: red;
 }
+/* In your global CSS file (e.g., index.css) */
+html, body {
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  margin: 0;
+  padding: 0;
+}
