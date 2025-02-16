@@ -18,12 +18,14 @@ import AuthProvider from './firebase/AuthProvider';
 import Register from './auth/Register';
 import PrivateRoute from './auth/PrivateRoute';
 import BloodRequest from './pages/BloodRequest';
-import BloodGroupDonors from './pages/bloodGroupDonors';
+import BloodGroupDonors from './pages/BloodGroupDonors';
 import { HelmetProvider } from 'react-helmet-async';
 import Terms from './pages/Terms';
 import Moderators from './pages/Moderators';
 import Organizatons from './pages/Organizatons';
 import AddOrganization from './components/organization/AddOrganization';
+import { OrganizationProvider } from './context/OrganizationProvider';
+import OrganizationDetails from './components/organization/OrganizationDetails';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -54,7 +56,11 @@ const router = createBrowserRouter([
         path: "/:id",
         element: <DonorDetails></DonorDetails>,
         loader: ({ params }) => fetch(`https://roktoinfo-server.vercel.app/donors/${params.id}`)
-
+      },
+      {
+        path: "/org/:id",
+        element: <OrganizationDetails></OrganizationDetails>,
+        loader: ({ params }) => fetch(`https://roktoinfo-server.vercel.app/organizations/${params.id}`)
       },
       {
         path: "/group/:group",
@@ -92,9 +98,11 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BloodDonorsProvider>
       <AuthProvider>
-        <HelmetProvider>
-        <RouterProvider router={router} />
-        </HelmetProvider>
+        <OrganizationProvider>
+          <HelmetProvider>
+             <RouterProvider router={router} />
+          </HelmetProvider>
+        </OrganizationProvider>
       </AuthProvider>
     </BloodDonorsProvider>
   </StrictMode>

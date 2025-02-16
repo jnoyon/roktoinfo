@@ -114,7 +114,7 @@ export default function DonorDetails() {
       .join(", ");
   };
   
-  
+  console.log(donor)
 
   return (
     <div className="mt-5">

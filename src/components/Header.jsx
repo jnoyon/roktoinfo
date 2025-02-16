@@ -20,7 +20,7 @@ export default function Header() {
   const closeDrawer = () => {
     document.getElementById('my-drawer').checked = false;
   };
-  console.log(user);
+
   return (
     <div className='bg-base-100 shadow-sm sticky top-0 z-50'>
         <div className="navbar  mx-auto w-11/12">

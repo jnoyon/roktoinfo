@@ -19,6 +19,8 @@ export default function AddDonor() {
   const [dob, setDob] = useState('');
   const [organization, setOrganization] = useState('');
   const [image, setImage] = useState(null);
+  const [orgSuggestions, setOrgSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [locations, setLocations] = useState({
     bhaluka: false,
     mymensingh: false,
@@ -28,6 +30,38 @@ export default function AddDonor() {
     dhaka: false, 
     others: false,
   });
+
+
+  // Fetch organization suggestions from API
+  const fetchOrganizations = async (query) => {
+    if (query.length < 2) {
+      setOrgSuggestions([]);
+      return;
+    }
+
+    try {
+      const response = await fetch(`https://roktoinfo-server.vercel.app/organizations?search=${query}`);
+      const data = await response.json();
+      setOrgSuggestions(data);
+      setShowSuggestions(true);
+    } catch (error) {
+      console.error('Error fetching organizations:', error);
+    }
+  };
+
+  // Handle organization input change
+  const handleOrganizationChange = (e) => {
+    const value = e.target.value;
+    setOrganization(value);
+    fetchOrganizations(value);
+  };
+
+  // Handle selecting an organization from suggestions
+  const handleSelectOrganization = (orgName) => {
+    setOrganization(orgName);
+    setShowSuggestions(false);
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -369,16 +403,18 @@ export default function AddDonor() {
 
         <label className="floating-label">
           <span>সংগঠন</span>
-          <input
-            type="text"
-            name="organization"
-            placeholder="Your Organizaton"
-            className="input input-md w-full"
-            value={organization}
-            onChange={(e) => setOrganization(e.target.value)}
-            
-          />
+          <input type="text" className="input input-md w-full" value={organization} onChange={handleOrganizationChange} autoComplete="off" />
         </label>
+
+        {showSuggestions && orgSuggestions.length > 0 && (
+          <ul className="border border-gray-300 rounded-md mt-1 bg-white shadow-md max-h-40 overflow-y-auto">
+            {orgSuggestions.map((org) => (
+              <li key={org.id} className="p-2 cursor-pointer hover:bg-gray-200" onClick={() => handleSelectOrganization(org.name)}>
+                {org.name}
+              </li>
+            ))}
+          </ul>
+        )}
 
         <input type="submit" value="যুক্ত করুন" className='btn btn-error text-white' />
       </form>
