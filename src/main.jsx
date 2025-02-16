@@ -8,14 +8,11 @@ import "./index.css";
 import MainLayout from './layout/MainLayout';
 import Home from './pages/Home';
 import ErrorPage from './pages/ErrorPage';
-import FindBlood from './pages/FindBlood';
-import More from './pages/More';
 import Login from './auth/Login';
 import AddDonor from './dashboard/AddDonor';
 import DonorDetails from './pages/DonorDetails';
 import { BloodDonorsProvider } from './context/BloodDonorsContext';
 import About from './pages/About';
-import Credit from './pages/Credit';
 import Dashboard from './dashboard/Dashboard';
 import AuthProvider from './firebase/AuthProvider';
 import Register from './auth/Register';
@@ -25,6 +22,8 @@ import BloodGroupDonors from './pages/bloodGroupDonors';
 import { HelmetProvider } from 'react-helmet-async';
 import Terms from './pages/Terms';
 import Moderators from './pages/Moderators';
+import Organizatons from './pages/Organizatons';
+import AddOrganization from './components/organization/AddOrganization';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -34,11 +33,6 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home></Home>
-      },
-      
-      {
-        path: "/more",
-        element: <More></More>
       },
       {
         path: "/request",
@@ -75,8 +69,8 @@ const router = createBrowserRouter([
         element: <Terms></Terms>
       },
       {
-        path: "/credit",
-        element: <Credit></Credit>
+        path: "/organizations",
+        element: <Organizatons></Organizatons>
       },
       {
         path: "/support",
@@ -85,6 +79,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <PrivateRoute> <Dashboard></Dashboard> </PrivateRoute>
+      },
+      {
+        path: "/add-org",
+        element: <PrivateRoute> <AddOrganization></AddOrganization> </PrivateRoute>
       },
     ]
   },

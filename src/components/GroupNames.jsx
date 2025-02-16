@@ -25,10 +25,10 @@ export default function GroupNames() {
       <div className="grid grid-cols-2 gap-3">
         {bloodGroups.map((group, index) => (
           <Link key={index} to={`/group/${group.path}`}>
-            <div className="bg-white shadow-sm rounded-md text-center py-2">
+            <div className="bg-white shadow-sm rounded-md text-center py-2 hover:bg-red-50 transition">
               <h1 className='border font-bold rounded-full leading-20 border-gray-300 mx-auto w-20 h-20 text-3xl mb-2'> {group.label}   </h1>
               <h2 className='font-bold'>{group.text}</h2>
-              <p> মোট: {getDonorCount(group.label)} জন </p>
+              <p className='text-sm'> মোট: {getDonorCount(group.label)} জন </p>
             </div>
           </Link>
         ))}

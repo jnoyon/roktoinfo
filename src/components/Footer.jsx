@@ -17,9 +17,9 @@ export default function Footer() {
           <span className="dock-label font-bold">হোম</span>
         </NavLink>
 
-        <NavLink to='/more'>
+        <NavLink to='/support'>
         <CgMoreR className="text-xl mb-0.5"  />
-        <span className="dock-label font-bold">আরও</span>
+        <span className="dock-label font-bold">সাপোর্ট</span>
       </NavLink>
         
       </div>

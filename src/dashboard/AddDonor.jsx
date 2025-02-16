@@ -12,6 +12,7 @@ export default function AddDonor() {
   const [lastDonation, setLastDonation] = useState('');
   const [totalDonation, setTotalDonation] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
+  const [whatsappNumber, setWhatsappNumber] = useState('');
   const [altMobileNumber, setAltMobileNumber] = useState('');
   const [weight, setWeight] = useState('');
   const [profession, setProfession] = useState('');
@@ -91,6 +92,7 @@ export default function AddDonor() {
       bloodGroup,
       lastDonation,
       mobileNumber,
+      whatsappNumber,
       altMobileNumber,
       weight,
       profession,
@@ -319,7 +321,18 @@ export default function AddDonor() {
             onChange={(e) => setAltMobileNumber(e.target.value)}
           />
         </label>
-
+        <label className="floating-label">
+          <span>WhatsApp নম্বর</span>
+          <input
+            type="number"
+            name="whatsappnumber"
+            placeholder="WhatsApp Number"
+            className="input input-md w-full"
+            value={whatsappNumber}
+            onChange={(e) => setWhatsappNumber(e.target.value)}
+          />
+        </label>
+        
         <label className="floating-label">
           <span>রক্তদাতার ওজন</span>
           <input
@@ -367,7 +380,7 @@ export default function AddDonor() {
           />
         </label>
 
-        <input type="submit" value="যুক্ত করুন" className='btn btn-accent' />
+        <input type="submit" value="যুক্ত করুন" className='btn btn-error text-white' />
       </form>
     </div>
   );

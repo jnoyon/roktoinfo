@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import donorIcon from '../assets/images/donor-icon.png'
 import { BloodDonorsContext } from "../context/BloodDonorsContext";
@@ -178,6 +178,7 @@ export default function DonorDetails() {
           <li className="border-b border-gray-300 py-1.5"> <span> বর্তমান ঠিকানা: </span> {donor.currentAddress} </li>
           {donor.permanentAddress && <li className="border-b border-gray-300 py-1.5"> <span> স্থায়ী ঠিকানা: </span> {donor.permanentAddress} </li>}
           {donor.weight && <li className="border-b border-gray-300 py-1.5"> <span> রক্তদাতার ওজন: </span> {donor.weight}  </li>}
+          
           { <li className=" py-1.5"> <span> নিকটস্থ রক্তদান এলাকা: </span>{getLocations(donor.locations)}  </li>}
           <li className="border border-gray-300 flex justify-between">
             <p> <span className="border-r border-gray-300 py-1.5 px-2 inline-block"> লিংক </span>  <span> {donorId} </span> </p>
@@ -191,7 +192,14 @@ export default function DonorDetails() {
           {donor.whatsappNumber && <a className="btn btn-success" href={`https://wa.me/${donor.mobileNumber}`} target="_blank" rel="noopener noreferrer"> WhatsApp </a>}
       </div>
 
+      
+
       </div>
+      { donor.organization && <div className="bg-white mx-auto w-11/12 shadow mt-5 rounded-md p-2 text-sm text-center">
+         <p> {donor.donorName} <span> {donor.organization}</span> এর একজন সদস্য। জরুরী প্রয়োজনে {donor.organization}  এ যোগাযোগ করতে পারেন। </p>
+         <Link className="btn btn-sm btn-error text-white mt-2"> সংগঠনের তালিকা </Link>
+      </div>
+      }
     </div>
   );
 }
