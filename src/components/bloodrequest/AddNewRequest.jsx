@@ -5,10 +5,13 @@ export default function AddNewRequest() {
   const [form, setForm] = useState(false);
   const [requestData, setRequestData] = useState({
     name: '',
+    patientName: '',
     phone: '',
     location: '',
     issue: '',
-    date: new Date().toLocaleDateString('en-GB')
+    date: new Date().toISOString().split('T')[0], // Default to today's date
+    hemoglobin: '',
+    note: '',
   });
 
   const handleAddRequest = () => {
@@ -38,23 +41,32 @@ export default function AddNewRequest() {
       .then((data) => {
         if (data) {
           Swal.fire({
-            title: 'Success!',
-            text: 'Your request has been submitted successfully.',
+            title: 'সফল!',
+            text: 'আপনার অনুরোধ সফলভাবে জমা দেওয়া হয়েছে।',
             icon: 'success',
-            confirmButtonText: 'OK',
+            confirmButtonText: 'ঠিক আছে',
+          });
+          setForm(false);
+          setRequestData({
+            name: '',
+            patientName: '',
+            phone: '',
+            location: '',
+            issue: '',
+            date: new Date().toISOString().split('T')[0],
+            hemoglobin: '',
+            note: '',
           });
         }
       })
       .catch(() => {
         Swal.fire({
-          title: 'Error!',
-          text: 'There was an issue submitting your request.',
+          title: 'ত্রুটি!',
+          text: 'আপনার অনুরোধ জমা দিতে সমস্যা হয়েছে।',
           icon: 'error',
-          confirmButtonText: 'Try Again',
+          confirmButtonText: 'আবার চেষ্টা করুন',
         });
       });
-
-    setForm(false);
   };
 
   const handleInputChange = (e) => {
@@ -88,11 +100,22 @@ export default function AddNewRequest() {
               />
             </label>
             <label className="input w-full">
+              <span className="label"> রোগীর নাম </span>
+              <input
+                type="text"
+                name="patientName"
+                placeholder="রোগীর নাম লিখুন"
+                value={requestData.patientName}
+                onChange={handleInputChange}
+                required
+              />
+            </label>
+            <label className="input w-full">
               <span className="label"> মোবাইল নম্বর </span>
               <input
                 type="text"
                 name="phone"
-                placeholder="আপনার মোবাইল নম্বর লিখুন"
+                placeholder="মোবাইল নম্বর লিখুন"
                 value={requestData.phone}
                 onChange={handleInputChange}
               />
@@ -107,19 +130,18 @@ export default function AddNewRequest() {
                 onChange={handleInputChange}
               />
             </label>
-            <label className="select w-full">
-              <span className="label">রুগীর সমস্যা</span>
-              <select
+            <label className="input w-full">
+              <span className="label"> রোগীর সমস্যা </span>
+              <input
+                type="text"
                 name="issue"
+                placeholder="রোগীর সমস্যার বিবরণ লিখুন"
                 value={requestData.issue}
                 onChange={handleInputChange}
-              >
-                <option value="গর্ভবতী">গর্ভবতী অপারেশন</option>
-                <option value="অপারেশন"> অন্যান্য অপারেশন</option>
-              </select>
+              />
             </label>
             <label className="input w-full">
-              <span className="label">তারিখ</span>
+              <span className="label"> রক্তগ্রহনের তারিখ </span>
               <input
                 type="date"
                 name="date"
@@ -127,11 +149,27 @@ export default function AddNewRequest() {
                 onChange={handleInputChange}
               />
             </label>
-            <input
-              type="submit"
-              className="btn btn-primary"
-              value="জমা দিন"
-            />
+            <label className="input w-full">
+              <span className="label"> রোগীর হিমোগ্রোবিন </span>
+              <input
+                type="text"
+                name="hemoglobin"
+                placeholder="রোগীর হিমোগ্রোবিনের মাত্রা লিখুন"
+                value={requestData.hemoglobin}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label className="w-full">
+              <span className="label"> নোট (ঐচ্ছিক) </span>
+              <textarea
+                className="textarea h-24 w-full"
+                name="note"
+                placeholder="কিছু বলার থাকলে লিখুন"
+                value={requestData.note}
+                onChange={handleInputChange}
+              />
+            </label>
+            <input type="submit" className="btn btn-primary" value="জমা দিন" />
           </form>
         </div>
       )}

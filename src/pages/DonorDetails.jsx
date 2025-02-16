@@ -197,7 +197,7 @@ export default function DonorDetails() {
       </div>
       { donor.organization && <div className="bg-white mx-auto w-11/12 shadow mt-5 rounded-md p-2 text-sm text-center">
          <p> {donor.donorName} <span> {donor.organization}</span> এর একজন সদস্য। জরুরী প্রয়োজনে {donor.organization}  এ যোগাযোগ করতে পারেন। </p>
-         <Link className="btn btn-sm btn-error text-white mt-2"> সংগঠনের তালিকা </Link>
+         <Link to='/organizations' className="btn btn-sm btn-error text-white mt-2"> সংগঠনের তালিকা </Link>
       </div>
       }
     </div>

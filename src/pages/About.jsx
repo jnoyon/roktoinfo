@@ -1,4 +1,5 @@
-import React from 'react'
+import { MdAddIcCall } from "react-icons/md";
+import { FaWhatsapp } from "react-icons/fa";
 
 export default function About() {
   return (
@@ -14,10 +15,11 @@ export default function About() {
             className="rounded-xl" />
         </figure>
         <div className="card-body p-2 items-center text-center">
-            <h2 className="font-bold"> জিহাদুর রহমান নয়ন </h2>
-            <p className='text-gray-700'>এডমিন এবং ফাউন্ডার, <br /> রক্ত ডট ইনফো </p>
+            <h2 className="font-bold text-base"> জিহাদুর রহমান নয়ন </h2>
+            <p className='text-gray-700'>এডমিন <br /> রক্ত ডট ইনফো </p>
             <div className="card-actions">
-              <button className="btn btn-error btn-sm text-white"> কল করুন </button>
+            <a className="btn btn-primary text-white btn-sm" href={`tel:01619756262`}> <MdAddIcCall className="text-lg" /> </a>
+             <a className="btn btn-success btn-sm text-white" href={`https://wa.me/01619756262`} target="_blank" rel="noopener noreferrer"> <FaWhatsapp className="text-lg" /> </a>
             </div>
         </div>
         </div>

@@ -25,9 +25,7 @@ const {user} = useContext(authContext);
     fetchRequests();
   }, []);
 
-    const handleAgreeButton = () => {
-        document.getElementById('my_modal_1').showModal()
-    } 
+
    
     const handleDelete = async (id) => {
         const result = await Swal.fire({
@@ -54,61 +52,100 @@ const {user} = useContext(authContext);
           }
         }
       };
+
+      const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+      };
+
+      const handleCopy = (request) => {
+        const requestInfo = `
+        রোগীর নাম: ${request.patientName || 'N/A'}
+        রোগীর সমস্যা: ${request.issue || 'N/A'}
+        রক্তগ্রহণের তারিখ: ${formatDate(request.date) || 'N/A'}
+        যোগাযোগ নম্বর: ${request.phone || 'N/A'}
+        রক্তগ্রহণের স্থান: ${request.location || 'N/A'}
+        রোগীর হিমোগ্রোবিন: ${request.hemoglobin || 'N/A'}
+        `;
+      
+        navigator.clipboard.writeText(requestInfo)
+          .then(() => {
+            Swal.fire({
+              icon: "success",
+              title: "কপি সম্পন্ন!",
+              text: "তথ্যগুলো কপি করা হয়েছে।",
+            });
+          })
+          .catch(() => {
+            Swal.fire({
+              icon: "error",
+              title: "ত্রুটি!",
+              text: "কপি করতে সমস্যা হয়েছে।",
+            });
+          });
+      };
+
+      
+      const formatTime = (timeString) => {
+        let [hours, minutes, seconds] = timeString.split(":");
+        hours = parseInt(hours, 10);
+        const ampm = hours >= 12 ? "PM" : "AM";
+        hours = hours % 12 || 12; // Convert 0 to 12 for AM
+        
+        return `${hours}:${minutes}:${seconds} ${ampm}`;
+      };
       
 
   return (
     <div>
         {requests.length >0 && <h2 className='divider divider-error text-red-500'> যাদের রক্ত প্রয়োজন </h2>}
+        {loading? <div className="flex bg-white w-full rounded-md p-2 flex-col gap-4">
+          <div className="flex items-center gap-4">
+            <div className="skeleton w-24 h-24 rounded-full shrink-0"></div>
+            <div className="flex flex-col gap-4">
+              <div className="skeleton h-4 w-28"></div>
+              <div className="skeleton h-4 w-28"></div>
+              <div className="skeleton h-4 w-28"></div>
+            </div>
+          </div>
+        </div>
+        :
         <div className="grid">
             {
                 requests.map((request, index)=> <div className="bg-white rounded-md shadow-sm p-2 mb-5">
-                <h1 className='text-sm text-center  bg-red-400 text-white py-1 mb-2 rounded-md'> {request.issue} </h1>
-                <p className='text-xs text-gray-600 mb-2 text-justify'> {request.issue} এর জন্য {request.date} তারিখে {request.location} রক্ত প্রয়োজন। যদি কোন হৃদয়বান ব্যক্তি রক্তদানে ইচ্ছুক হোন তাহলে {request.phone} নম্বরে যোগাযোগ করার অনুরোধ রইল। </p>
-                <p className='text-xs text-gray-600'> <b> - {request.name} </b> </p>
-                <p className='text-xs text-gray-600'> {request.currentTime} ({request.currentDate}) </p>
+                <h1 className='text-sm text-center  bg-red-400 text-white py-1 mb-2 rounded-md'> রক্ত প্রয়োজন </h1>
+
+                <ul className='list-disc ml-5 flex flex-col text-sm request-info'>
+                  {request.patientName && <li> রোগীর নাম: {request.patientName} </li>}
+                  {request.issue && <li> রোগীর সমস্যা: {request.issue} </li>}
+                  {request.date && <li> রক্তগ্রহণের তারিখ: {formatDate(request.date)} </li>}
+                  {request.phone && <li> যোগাযোগ নম্বর: {request.phone} </li>}
+                  {request.location && <li> রক্তগ্রহণের স্থান: {request.location} </li>}
+                  {request.hemoglobin && <li> রোগীর হিমোগ্রোবিন: {request.hemoglobin} </li>}
+                </ul>
+
+                {request.note && <p className='text-sm text-gray-600 mb-2 text-justify'>  </p>}
+                
                 <div className="text-center mt-2">
-                    <button className='btn btn-success btn-sm text-white mr-2' onClick={handleAgreeButton}> আমি রক্ত দিতে ইচ্ছুক </button>
+                    <button className='btn btn-primary btn-sm text-white mr-2' onClick={() => handleCopy(request)}> কপি করুন </button>
+                    <a className='btn btn-success btn-sm text-white mr-2' href={`tel:${request.phone}`}> যোগাযোগ করুন </a>
                     {user && <button onClick={()=>handleDelete(request._id)} className='btn btn-sm btn-error text-white'> ডিলিট </button>}
                 </div>
-            </div>)
+                <div className="text-center text-sm mt-3 text-gray-600">
+                  <h2 className='font-bold border-b border-gray-300 py-1 mb-1'> আবেদনকারী </h2>
+                  <p>   {request.name}  </p>
+                  <p> তারিখ: {request.currentDate} ॥ সময়: {formatTime(request.currentTime)}   </p>
+                </div>
+            </div>
+            
+          )
             }
             
 
-        </div>
-
-        <dialog id="my_modal_1" className="modal">
-        <div className="modal-box">
-            <h3 className="font-bold">আপনি কি এই ব্যক্তিকে রক্ত দিবেন?</h3>
-            <p className="py-2 text-sm"> আপনি এই ব্যক্তিকে রক্তদানে আগ্রহী হলে নিচের ফরমটি পূরণ করুন।  </p>
-            <div className="modal-action">
-            <form method="dialog">
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-            <form className='flex flex-col gap-5'>
-                    <label className="input w-full">
-                        <span className="label"> আপনার নাম </span>
-                        <input type="text" placeholder="আপনার নাম লিখুন" required />
-                    </label>
-                    <label className="input w-full">
-                        <span className="label"> আপনার ঠিকানা </span>
-                        <input type="text" placeholder="আপনার নাম লিখুন" />
-                    </label>
-                    <label className="input w-full">
-                        <span className="label"> মোবাইল নম্বর </span>
-                        <input type="text" placeholder="আপনার মোবাইল নম্বর লিখুন" />
-                    </label>
-                    <label className="input w-full">
-                        <span className="label"> বিকল্প নম্বর </span>
-                        <input type="text" placeholder="আপনার মোবাইল নম্বর লিখুন" />
-                    </label>
-
-
-                    <input type="submit" className='btn btn-primary' value="জমা দিন" />
-                </form>
-                  
-            </form>
-            </div>
-        </div>
-        </dialog>
+        </div>}
     </div>
   )
 }

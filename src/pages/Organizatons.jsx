@@ -24,7 +24,7 @@ export default function Organizations() {
     }
   }, [organizations, donors]);
 
-  if (loading) return <p className="text-center w-11/12 mx-auto mt-5">
+  if (loading) return <div className="text-center w-11/12 mx-auto mt-5">
     <div className="flex bg-white w-full rounded-md p-2 flex-col gap-4">
       {[...Array(5)].map((_, index) => (
         <div className="flex items-center gap-4" key={index}>
@@ -36,7 +36,7 @@ export default function Organizations() {
         </div>
       ))}
     </div>
-  </p>;
+  </div>;
 
   if (error) return <p className="text-center text-red-500 my-5">ত্রুটি: {error}</p>;
 
@@ -63,14 +63,9 @@ export default function Organizations() {
                 <tr key={org._id}>
                   <td>
                     <div className="flex items-center gap-3">
-                      <div className="avatar">
-                        <div className="mask mask-squircle h-12 w-12">
-                          <img src={donorIcon} alt="Icon" />
-                        </div>
-                      </div>
                       <div>
                         <div className="font-bold">{org.name}</div>
-                        <div className="text-xs opacity-50">{org.address} (রক্তদাতা: {org.donorsCount} জন)</div>
+                        <div className="text-xs opacity-50">{org.address} <br /> রক্তদাতা: {org.donorsCount} জন </div>
                       </div>
                     </div>
                   </td>

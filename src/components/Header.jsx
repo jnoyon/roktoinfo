@@ -47,12 +47,6 @@ export default function Header() {
               <h2 className='font-bold border-b border-gray-300 pb-2 mt-2'> ইউজার ড্যাশবোর্ড </h2>
             {   user? 
               <>
-              
-              <div className="text-center bg-red-100 px-1 py-4 rounded-md">
-                <img src={user?.photoURL || donorIcon} className='w-20 h-20 rounded-xl mx-auto' alt="image" />
-                <h2 className='font-bold mt-1'> {user?.displayName || user.email} </h2>
-                <Link onClick={closeDrawer} className='btn btn-error text-white btn-xs mt-2'> এডিট প্রোফাইল </Link>
-              </div>
               <li onClick={closeDrawer}><Link to='/dashboard'> ড্যাশবোর্ড </Link></li>
               <li onClick={closeDrawer}> <Link to='/add'> ডোনার যুক্ত করুন </Link></li>
               <li onClick={closeDrawer}><button onClick={handleLogout}>লগআউট করুন</button></li>
