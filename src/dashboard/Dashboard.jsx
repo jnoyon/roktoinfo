@@ -104,6 +104,11 @@ export default function Dashboard() {
 
         </ul>
       </div>
+      <div className='bg-white rounded-md mb-3 p-2 text-sm shadow-sm text-center mt-3 flex items-center justify-between'>
+       
+        <p className='text-base'> রক্তদাতা যুক্ত করতে চান? </p>
+        <Link to='/add' className="btn btn-error text-white btn-sm">এখানে ক্লিক করুন </Link>
+    </div>
     </div>
   );
 }

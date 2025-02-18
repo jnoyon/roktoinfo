@@ -5,6 +5,7 @@ import imageCompression from 'browser-image-compression';
 export default function AddDonor() {
   const {user} = useContext(authContext);
   const [donorName, setDonorName] = useState('');
+  const [donorUserName, setDonorUserName] = useState('');
   const [fatherName, setFatherName] = useState('');
   const [currentAddress, setCurrentAddress] = useState('');
   const [permanentAddress, setPermanentAddress] = useState('');
@@ -120,6 +121,7 @@ export default function AddDonor() {
     // Collecting data from the form
     const donor = {
       donorName,
+      donorUserName,
       fatherName,
       currentAddress,
       permanentAddress,
@@ -204,6 +206,8 @@ export default function AddDonor() {
     setLocations((prev) => ({ ...prev, [name]: checked }));
   };
 
+  
+
   return (
     <div className='w-11/12 mx-auto py-5'>
       <h2 className='text-lg font-bold divider'>রক্তদাতার প্রোফাইল তৈরি করুন</h2>
@@ -226,6 +230,18 @@ export default function AddDonor() {
             className="input input-md w-full"
             value={donorName}
             onChange={(e) => setDonorName(e.target.value)}
+            required
+          />
+        </label>
+        <label className="floating-label">
+          <span>ইউজারনেম *</span>
+          <input
+            type="text"
+            name="donor_name"
+            placeholder="ইংরেজিতে লিখুন"
+            className="input input-md w-full"
+            value={donorUserName}
+            onChange={(e) => setDonorUserName(e.target.value)}
             required
           />
         </label>

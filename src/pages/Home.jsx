@@ -5,6 +5,7 @@ import Statistics from '../components/Statistics'
 import NoticeForMother from '../components/NoticeForMother'
 import GroupNames from '../components/GroupNames'
 import { Helmet } from 'react-helmet-async';
+import NoticeBoard from '../components/organization/NoticeBoard'
 export default function Home() {
   return (
     <div>
@@ -13,6 +14,7 @@ export default function Home() {
         </Helmet>
         <Slider></Slider>
         <NoticeForMother></NoticeForMother>
+        <NoticeBoard></NoticeBoard>
         <GroupNames></GroupNames>
         <TopDonors></TopDonors>
         <Statistics></Statistics>
