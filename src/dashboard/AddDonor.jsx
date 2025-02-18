@@ -3,9 +3,8 @@ import { authContext } from '../firebase/AuthProvider';
 import Swal from 'sweetalert2'
 import imageCompression from 'browser-image-compression';
 export default function AddDonor() {
-  const {user} = useContext(authContext);
+  const { user } = useContext(authContext);
   const [donorName, setDonorName] = useState('');
-  const [donorUserName, setDonorUserName] = useState('');
   const [fatherName, setFatherName] = useState('');
   const [currentAddress, setCurrentAddress] = useState('');
   const [permanentAddress, setPermanentAddress] = useState('');
@@ -28,12 +27,11 @@ export default function AddDonor() {
     mawna: false,
     gazipur: false,
     gafargoan: false,
-    dhaka: false, 
+    dhaka: false,
     others: false,
   });
+  const [loading, setLoading] = useState(false);  // Added loading state
 
-
-  // Fetch organization suggestions from API
   const fetchOrganizations = async (query) => {
     if (query.length < 2) {
       setOrgSuggestions([]);
@@ -50,53 +48,47 @@ export default function AddDonor() {
     }
   };
 
-  // Handle organization input change
   const handleOrganizationChange = (e) => {
     const value = e.target.value;
     setOrganization(value);
     fetchOrganizations(value);
   };
 
-  // Handle selecting an organization from suggestions
   const handleSelectOrganization = (orgName) => {
     setOrganization(orgName);
     setShowSuggestions(false);
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+    
+    setLoading(true);  // Set loading to true while the request is processing
+
     const donorAuthor = user.email;
-  
-    // Upload image to Imgbb
     let imageUrl = '';
-  
+
     if (image) {
       const formData = new FormData();
       formData.append('image', image);
-  
+
       try {
         const options = {
-          maxSizeMB: 0.1, // 100KB
-          maxWidthOrHeight: 150, // Resize to 150px max width or height
+          maxSizeMB: 0.1, 
+          maxWidthOrHeight: 150, 
           useWebWorker: true,
         };
-          // Compress and resize the image
-          const compressedImage = await imageCompression(image, options);
-
-          
-          formData.append('image', compressedImage);
-          const imgbbApiKey = import.meta.env.VITE_IMGBB_API_KEY;
-          const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbApiKey}`, {
+        const compressedImage = await imageCompression(image, options);
+        formData.append('image', compressedImage);
+        const imgbbApiKey = import.meta.env.VITE_IMGBB_API_KEY;
+        const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbApiKey}`, {
           method: 'POST',
           body: formData,
         });
-  
+
         const data = await res.json();
         
         if (data.success) {
-          imageUrl = data.data.url; // Use the image URL returned by Imgbb
+          imageUrl = data.data.url;
         } else {
           Swal.fire({
             title: 'Error!',
@@ -104,7 +96,8 @@ export default function AddDonor() {
             icon: 'error',
             confirmButtonText: 'OK',
           });
-          return; // Stop the form submission if image upload fails
+          setLoading(false);  // Set loading to false when done
+          return;
         }
       } catch (error) {
         console.error('Image upload error:', error);
@@ -114,14 +107,13 @@ export default function AddDonor() {
           icon: 'error',
           confirmButtonText: 'OK',
         });
-        return; // Stop the form submission if an error occurs
+        setLoading(false);  // Set loading to false when done
+        return;
       }
     }
-  
-    // Collecting data from the form
+
     const donor = {
       donorName,
-      donorUserName,
       fatherName,
       currentAddress,
       permanentAddress,
@@ -134,13 +126,12 @@ export default function AddDonor() {
       profession,
       dob,
       organization,
-      image: imageUrl,  // Use the uploaded image URL
+      image: imageUrl, 
       locations,
       totalDonation,
-      donorAuthor
+      donorAuthor,
     };
-  
-    // Sending donor data to your backend API
+
     fetch('https://roktoinfo-server.vercel.app/donors', {
       method: 'POST',
       headers: {
@@ -150,6 +141,7 @@ export default function AddDonor() {
     })
       .then((res) => res.json())
       .then((data) => {
+        setLoading(false);  // Set loading to false when done
         if (data.insertedId) {
           Swal.fire({
             title: 'অভিনন্দন!',
@@ -157,8 +149,7 @@ export default function AddDonor() {
             icon: 'success',
             confirmButtonText: 'ওকে',
           });
-      
-          // Reset form states after successful submission
+          
           setDonorName('');
           setFatherName('');
           setCurrentAddress('');
@@ -186,8 +177,8 @@ export default function AddDonor() {
           });
         }
       })
-      
       .catch((err) => {
+        setLoading(false);  // Set loading to false if there is an error
         console.error(err);
         Swal.fire({
           title: 'Error!',
@@ -196,15 +187,13 @@ export default function AddDonor() {
           confirmButtonText: 'OK',
         });
       });
-  
-   
   };
-  
 
   const handleLocationChange = (e) => {
     const { name, checked } = e.target;
     setLocations((prev) => ({ ...prev, [name]: checked }));
   };
+
 
   
 
@@ -233,18 +222,7 @@ export default function AddDonor() {
             required
           />
         </label>
-        <label className="floating-label">
-          <span>ইউজারনেম *</span>
-          <input
-            type="text"
-            name="donor_name"
-            placeholder="ইংরেজিতে লিখুন"
-            className="input input-md w-full"
-            value={donorUserName}
-            onChange={(e) => setDonorUserName(e.target.value)}
-            required
-          />
-        </label>
+        
         <label className="floating-label">
           <span>পিতার নাম *</span>
           <input
@@ -310,7 +288,7 @@ export default function AddDonor() {
         </label>
 
         <label className="floating-label">
-          <span> মোট রক্তদান *</span>
+          <span> মোট রক্তদান </span>
           <input
             type="number"
             name="total_donation"
@@ -318,7 +296,6 @@ export default function AddDonor() {
             className="input input-md w-full"
             value={totalDonation}
             onChange={(e) => setTotalDonation(e.target.value)}
-            required
           />
         </label>
 
@@ -360,6 +337,7 @@ export default function AddDonor() {
         </fieldset>
 
         <h2 className="divider">অতিরিক্ত তথ্য</h2>
+
         <label className="floating-label">
           <span>বিকল্প মোবাইল নম্বর</span>
           <input
@@ -431,8 +409,10 @@ export default function AddDonor() {
             ))}
           </ul>
         )}
-
         <input type="submit" value="যুক্ত করুন" className='btn btn-error text-white' />
+        {loading && (
+          <div className="loading-text"><progress className="progress progress-success w-full"></progress></div>
+        )}
       </form>
     </div>
   );

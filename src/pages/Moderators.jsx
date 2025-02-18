@@ -39,7 +39,19 @@ export default function Moderators() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="card w-11/12 md:w-1/3 mx-auto bg-base-100 shadow-sm p-3 text-center my-10">
+    <div className="skeleton h-28 w-28 rounded-full mx-auto"></div>
+    <div className="skeleton h-4 w-40 mx-auto mt-2"></div>
+    <div className="skeleton h-4 w-56 mx-auto mt-1"></div>
+    <div className="skeleton h-4 w-40 mx-auto mt-2"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-1"></div>
+    <div className="skeleton h-4 w-40 mx-auto mt-2"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-1"></div>
+    <div className="skeleton h-4 w-40 mx-auto mt-2"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-1"></div>
+    <div className="skeleton h-4 w-full mx-auto mt-1"></div>
+    <div className="skeleton h-8 w-20 mx-auto mt-2"></div>
+  </div>;
   }
 
   if (error) {
@@ -51,7 +63,7 @@ export default function Moderators() {
     <div className=' mx-auto w-11/12'>
       <h2 className='text-center divider text-error font-bold divider-error'> সাপোর্ট টীম </h2>
       
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid md:grid-cols-5 grid-cols-2 gap-3">
         {moderators.map((moderator, index) => (
           <div className='bg-white text-center shadow' key={index}>
             <img src={moderator.image} alt="Image" className='w-full' />

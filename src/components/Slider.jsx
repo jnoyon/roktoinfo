@@ -5,7 +5,13 @@ import donorIcon from '../assets/images/donor-icon.png'
 export default function Slider() {
 
   const {donors, loading} = useContext(BloodDonorsContext);
-    
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
 
   return (
     <div className="my-5 w-11/12 mx-auto">
@@ -33,7 +39,7 @@ export default function Slider() {
                         <h1 className="font-bold"> {donor.donorName} </h1>
                         <p className="text-sm"> {donor.currentAddress} </p>
                         <p className="text-sm"> রক্তের গ্রুপ: {donor.bloodGroup} </p>
-                        <p className="text-sm"> সর্বশেষ রক্তদান: {donor.lastDonation} </p>
+                        <p className="text-sm"> সর্বশেষ রক্তদান: {formatDate(donor.lastDonation)} </p>
                     </div>
                 </div>
             </div>
