@@ -156,6 +156,7 @@ export default function DonorDetails() {
   };
   
 
+    
   return (
     <div className="mt-5">
       <ToastContainer
@@ -180,7 +181,7 @@ export default function DonorDetails() {
           <h2 className="text-lg font-bold"> {donor.donorName} </h2>
           {donor.profession && <p className="text-sm text-gray-600 mb-1"> {donor.profession }  </p>}
           <p className="text-sm text-gray-600 mb-1"> রক্তের গ্রুপ: {donor.bloodGroup} (মোট রক্তদান: {donor.totalDonation} বার) <br /> সর্বশেষ: {formatDate(donor.lastDonation)} ( {calculateDaysAgo(donor.lastDonation)} দিন আগে)</p>
-          {user&& <div className="action my-2 gap-2 flex justify-center"> 
+          {user && donor.donorAuthor === user.email && <div className="action my-2 gap-2 flex justify-center"> 
             <button className="btn btn-xs btn-error text-white" onClick={()=>document.getElementById('updateModal').showModal()}> রক্তদানের তথ্য আপডেট </button>
             {/* <button className="btn btn-xs btn-accent text-white" onClick={()=>document.getElementById('updateProfileModal').showModal()}> প্রোফাইল এডিট </button> */}
               

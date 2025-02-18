@@ -16,9 +16,9 @@ export default function Moderators() {
         }
         const data = await response.json();
         
-        // Shuffle the moderators array
-        const shuffledModerators = shuffleArray(data);
-        setModerators(shuffledModerators);
+        // Filter moderators where status is true and shuffle the array
+        const filteredModerators = shuffleArray(data.filter(moderator => moderator.status));
+        setModerators(filteredModerators);
       } catch (error) {
         setError(error);
       } finally {
