@@ -31,7 +31,7 @@ export default function Statistics() {
       
     </div>
     <div className="stat-title"> মোট </div>
-    <div className="stat-value"> <CountUp end={100} /> </div>
+    <div className="stat-value"> <CountUp end={5} /> </div>
     <div className="stat-desc"> জন মডারেটর</div>
   </div>
 </div>

@@ -39,8 +39,8 @@ export default function ThisMonthDonors() {
     <div className="w-11/12 mx-auto mt-5">
       <ul className="list bg-base-100 rounded-box shadow-md">
         <li className="p-4 pb-2 opacity-60 tracking-wide flex items-center gap-0.5"> 
-          <MdBloodtype className="text-red-500" /> 
-          <span> {bengaliMonths[currentMonth]} মাসের রক্তদাতা </span> 
+          <MdBloodtype className="text-red-500 text-2xl" /> 
+          <span className="text-xl"> {bengaliMonths[currentMonth]} মাসের রক্তদাতা </span> 
         </li>
 
         {loading ? (
@@ -60,7 +60,7 @@ export default function ThisMonthDonors() {
           thisMonthDonors.length > 0 ? (
             thisMonthDonors.map((donor, index) => {
               return (
-                <li className="list-row" key={index}>
+                <li className="list-row gap-2 px-2" key={index}>
                   <div className="text-4xl font-thin opacity-30 tabular-nums">
                     {String(index + 1).padStart(2, '0')}
                   </div>
@@ -74,11 +74,11 @@ export default function ThisMonthDonors() {
                   <div className="list-col-grow">
                     <div>{donor.donorName} <span className="bg-red-200 ml-2 text-xs px-2 rounded-md"> {donor.bloodGroup} </span> </div>
                     <div className="text-xs opacity-60">
-                      মোট রক্তদান: {donor.totalDonation} (সর্বশেষ: {formatDate(donor.lastDonation)})
+                      মোট: {donor.totalDonation} বার (সর্বশেষ: {formatDate(donor.lastDonation)})
                     </div>
                   </div>
-                  <Link to={`/${donor._id}`} className="btn btn-square btn-ghost">
-                    <FaEye className="text-lg text-gray-700" />
+                  <Link to={`/${donor._id}`} className="btn btn-xs btn-success">
+                    <FaEye className="text-lg text-white" />
                   </Link>
                 </li>
               );

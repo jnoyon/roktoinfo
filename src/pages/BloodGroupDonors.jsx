@@ -43,16 +43,6 @@ export default function BloodGroupDonors() {
 
   return (
     <div className="mx-auto w-11/12 py-5">
-      {/* <div className="bg-white mb-5 px-2 pb-5 py-1 shadow-md rounded-md">
-        <p className="divider"> কোথায় রক্ত প্রয়োজন? </p>
-        <div className="filter flex justify-center">
-          <input className="btn text-xs filter-reset" type="radio" name="metaframeworks" aria-label="All" />
-          <input className="btn text-xs" type="radio" name="metaframeworks" aria-label="ভালুকা" />
-          <input className="btn text-xs" type="radio" name="metaframeworks" aria-label="ময়মনসিংহ" />
-          <input className="btn text-xs" type="radio" name="metaframeworks" aria-label="ঢাকা" />
-        </div>
-      </div> */}
-
       <h2 className="text-center text-2xl font-bold mb-5 divider divider-error text-error">{bloodGroup} রক্তদাতা</h2>
       <Helmet>
         <title> {bloodGroup} গ্রুপের রক্তদাতা - রক্ত ডট ইনফো </title>
@@ -78,8 +68,8 @@ export default function BloodGroupDonors() {
                   <h1 className="font-bold"> {donor.donorName} </h1>
                   <p className="text-sm"> {donor.currentAddress} </p>
                   <p className="text-sm text-gray-600 mb-1">
-                    মোট রক্তদান: {donor.totalDonation} বার <br />
-                    সর্বশেষ রক্তদান: {formatDate(donor.lastDonation)} ({calculateDaysAgo(donor.lastDonation)} দিন আগে)
+                     মোট রক্তদান: {donor.totalDonation} বার <br />
+                    {donor.totalDonation > 0 && <span> সর্বশেষ রক্তদান: {formatDate(donor.lastDonation)} ({calculateDaysAgo(donor.lastDonation)} দিন আগে) </span>}
                   </p>
                 </div>
                 <div className="mt-2 flex gap-2 justify-center">

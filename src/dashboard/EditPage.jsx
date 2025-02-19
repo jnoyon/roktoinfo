@@ -1,20 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import { BloodDonorsContext } from "../context/BloodDonorsContext";
 import { authContext } from "../firebase/AuthProvider";
-
-
 
 export default function EditPage() {
   const [organization, setOrganization] = useState('');
   const [image, setImage] = useState(null);
-  const [orgSuggestions, setOrgSuggestions] = useState([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-
   const [donor, setDonor] = useState(null);
   const loaderData = useLoaderData();
-  const {loading} = useContext(BloodDonorsContext);
-  const {user} = useContext(authContext);
+  const { loading } = useContext(BloodDonorsContext);
+  const { user } = useContext(authContext);
 
   useEffect(() => {
     setTimeout(() => {
@@ -22,8 +17,6 @@ export default function EditPage() {
     }, 500); // Simulate slight delay for smoother transition
   }, [loaderData]);
 
-
-  
   if (!donor) {
     return (
       <div className="card w-11/12 md:w-1/3 mx-auto bg-base-100 shadow-sm p-3 text-center my-10">
@@ -42,11 +35,11 @@ export default function EditPage() {
     );
   }
 
-  const handleUpdate = (e, id) => {
+  const handleUpdate = async (e, id) => {
     e.preventDefault();
-  
+
     const formData = new FormData(e.target);
-  
+
     const updatedDonor = {
       donorName: formData.get("donor_name"),
       fatherName: formData.get("father_name"),
@@ -61,41 +54,40 @@ export default function EditPage() {
       weight: formData.get("weight"),
       profession: formData.get("profession"),
       dob: formData.get("dob"),
+      status: formData.get("donor_status") === "নিয়মিত",
     };
-  
-    console.log("Updated Donor Data:", updatedDonor); // Log data before sending
-  
-    fetch(`https://roktoinfo-server.vercel.app/donors/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedDonor),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Server Response:", data);
-  
-        if (data.modifiedCount > 0) {
-          alert("Profile updated successfully!");
-          setDonor((prev) => ({
-            ...prev,
-            ...updatedDonor,
-          }));
-        } else {
-          alert("No changes were made.");
-        }
-      })
-      .catch((error) => console.error("Error updating donor:", error));
+
+    try {
+      const response = await fetch(`https://roktoinfo-server.vercel.app/donors/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedDonor),
+      });
+
+      const data = await response.json();
+
+      if (data.modifiedCount > 0) {
+        alert("Profile updated successfully!");
+        setDonor((prev) => ({
+          ...prev,
+          ...updatedDonor,
+        }));
+      } else {
+        alert("No changes were made.");
+      }
+    } catch (error) {
+      console.error("Error updating donor:", error);
+      alert("An error occurred while updating the profile.");
+    }
   };
-  
-  
 
   return (
     <div className='w-11/12 mx-auto py-5'>
       <h2 className='text-lg font-bold divider'> প্রোফাইল আপডেট করুন </h2>
       <form className='w-full flex flex-col gap-5 bg-white p-2' onSubmit={(e) => handleUpdate(e, donor._id)}>
-      <fieldset className="fieldset">
+        <fieldset className="fieldset">
           <legend className="fieldset-legend">রক্তদাতার ছবি</legend>
           <input
             type="file"
@@ -107,13 +99,11 @@ export default function EditPage() {
         <label className="floating-label">
           <span>নাম *</span>
           <input
-                type="text"
-                name="donor_name"
-                className="input input-md w-full"
-                value={donor.donorName}
-                onChange={(e) => setDonor({ ...donor, donorName: e.target.value })}
-                />
-
+            type="text"
+            name="donor_name"
+            className="input input-md w-full"
+            defaultValue={donor.donorName}
+          />
         </label>
         <label className="floating-label">
           <span>পিতার নাম *</span>
@@ -160,28 +150,6 @@ export default function EditPage() {
             <option>AB-</option>
           </select>
         </label>
-
-        <label className="input w-full">
-          <span className="label">সর্বশেষ রক্তদান</span>
-          <input
-            type="date"
-            name="last_donation"
-            value={donor.lastDonation}
-          />
-        </label>
-
-        <label className="floating-label">
-          <span> মোট রক্তদান *</span>
-          <input
-            type="number"
-            name="total_donation"
-            placeholder="Your mobile number"
-            className="input input-md w-full"
-            defaultValue={donor.totalDonation}
-
-          />
-        </label>
-
         <label className="floating-label">
           <span>মোবাইল নম্বর *</span>
           <input
@@ -190,6 +158,14 @@ export default function EditPage() {
             className="input input-md w-full"
             defaultValue={donor.mobileNumber}
           />
+        </label>
+        <label className="input w-full">
+          <span className="label">সর্বশেষ রক্তদান</span>
+          <input type="date" name="last_donation" defaultValue={donor.lastDonation} />
+        </label>
+        <label className="input w-full">
+          <span className="label">মোট রক্তদান</span>
+          <input name="total_donation" type="number" defaultValue={donor.totalDonation} />
         </label>
         <fieldset className="fieldset p-4 bg-base-100 border border-base-300 flex flex-wrap gap-2 rounded-box">
           <legend className="fieldset-legend">নিকটস্থ রক্তদান এলাকা</legend>
@@ -210,7 +186,6 @@ export default function EditPage() {
             </label>
           ))}
         </fieldset>
-
         <h2 className="divider">অতিরিক্ত তথ্য</h2>
         <label className="floating-label">
           <span>বিকল্প মোবাইল নম্বর</span>
@@ -219,7 +194,7 @@ export default function EditPage() {
             name="alt_mobile_number"
             placeholder="Alternative mobile number"
             className="input input-md w-full"
-            value={donor.altMobileNumber}
+            defaultValue={donor.altMobileNumber}
           />
         </label>
         <label className="floating-label">
@@ -229,10 +204,9 @@ export default function EditPage() {
             name="whatsappnumber"
             placeholder="WhatsApp Number"
             className="input input-md w-full"
-            value={donor.whatsappNumber}
+            defaultValue={donor.whatsappNumber}
           />
         </label>
-        
         <label className="floating-label">
           <span>রক্তদাতার ওজন</span>
           <input
@@ -240,10 +214,9 @@ export default function EditPage() {
             name="weight"
             placeholder="Weight"
             className="input input-md w-full"
-            value={donor.weight}
+            defaultValue={donor.weight}
           />
         </label>
-
         <label className="floating-label">
           <span>রক্তদাতার পেশা</span>
           <input
@@ -251,34 +224,37 @@ export default function EditPage() {
             name="profession"
             placeholder="Profession"
             className="input input-md w-full"
-            value={donor.profession}
+            defaultValue={donor.profession}
           />
         </label>
-
         <label className="input w-full">
           <span className="label">জন্মতারিখ</span>
           <input
             type="date"
             name="dob"
-            value={donor.dob}
+            defaultValue={donor.dob}
           />
         </label>
-
         <label className="floating-label">
           <span>সংগঠন</span>
-          <input type="text" className="input input-md w-full" value={organization}  autoComplete="off" />
+          <input
+            type="text"
+            className="input input-md w-full"
+            value={organization}
+            onChange={(e) => setOrganization(e.target.value)}
+            autoComplete="off"
+          />
         </label>
-
-        {showSuggestions && orgSuggestions.length > 0 && (
-          <ul className="border border-gray-300 rounded-md mt-1 bg-white shadow-md max-h-40 overflow-y-auto">
-            {orgSuggestions.map((org) => (
-              <li key={org.id} className="p-2 cursor-pointer hover:bg-gray-200" onClick={() => handleSelectOrganization(org.name)}>
-                {org.name}
-              </li>
-            ))}
-          </ul>
-        )}
-
+        <label className="select w-full">
+          <span className="label">ডোনার স্ট্যাটাস</span>
+          <select
+            name="donor_status"
+            defaultValue={donor.status ? "নিয়মিত" : "অনিয়মিত"}
+          >
+            <option value="নিয়মিত">নিয়মিত</option>
+            <option value="অনিয়মিত">অনিয়মিত</option>
+          </select>
+        </label>
         <input type="submit" value="আপডেট করুন" className='btn btn-error text-white' />
       </form>
     </div>

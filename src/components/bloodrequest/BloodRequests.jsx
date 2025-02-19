@@ -119,6 +119,7 @@ const {user} = useContext(authContext);
                 <h1 className='text-sm text-center  bg-red-400 text-white py-1 mb-2 rounded-md'> রক্ত প্রয়োজন </h1>
 
                 <ul className='list-disc ml-5 flex flex-col text-sm request-info'>
+                  <li> রিকুয়েস্ট আইডি: {request._id.match(/\d/g).slice(-3).join("")} </li>
                   {request.patientName && <li> রোগীর নাম: {request.patientName} </li>}
                   {request.issue && <li> রোগীর সমস্যা: {request.issue} </li>}
                   {request.date && <li> রক্তগ্রহণের তারিখ: {formatDate(request.date)} </li>}

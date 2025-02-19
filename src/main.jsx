@@ -26,6 +26,7 @@ import Organizatons from './pages/Organizatons';
 import AddOrganization from './components/organization/AddOrganization';
 import { OrganizationProvider } from './context/OrganizationProvider';
 import OrganizationDetails from './components/organization/OrganizationDetails';
+import EditPage from './dashboard/EditPage';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -55,6 +56,11 @@ const router = createBrowserRouter([
       {
         path: "/:id",
         element: <DonorDetails></DonorDetails>,
+        loader: ({ params }) => fetch(`https://roktoinfo-server.vercel.app/donors/${params.id}`)
+      },
+      {
+        path: "edit/:id",
+        element: <EditPage></EditPage>,
         loader: ({ params }) => fetch(`https://roktoinfo-server.vercel.app/donors/${params.id}`)
       },
       {

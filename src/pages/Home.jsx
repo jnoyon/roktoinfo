@@ -13,7 +13,7 @@ export default function Home() {
         <Helmet>
           <title> হোমপেইজ - রক্ত ডট ইনফো </title>
         </Helmet>
-        <Slider></Slider>
+        
         <NoticeForMother></NoticeForMother>
         <NoticeBoard></NoticeBoard>
         <GroupNames></GroupNames>
