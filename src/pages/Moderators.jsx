@@ -10,14 +10,14 @@ export default function Moderators() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('mods.json'); // Example API endpoint
+        const response = await fetch('https://roktoinfo-server.vercel.app/users'); // Example API endpoint
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
         
         // Filter moderators where status is true and shuffle the array
-        const filteredModerators = shuffleArray(data.filter(moderator => moderator.status));
+        const filteredModerators = shuffleArray(data.filter(moderator => moderator.isModerator));
         setModerators(filteredModerators);
       } catch (error) {
         setError(error);
@@ -39,25 +39,57 @@ export default function Moderators() {
   };
 
   if (loading) {
-    return <div className="card w-11/12 md:w-1/3 mx-auto bg-base-100 shadow-sm p-3 text-center my-10">
-    <div className="skeleton h-28 w-28 rounded-full mx-auto"></div>
-    <div className="skeleton h-4 w-40 mx-auto mt-2"></div>
-    <div className="skeleton h-4 w-56 mx-auto mt-1"></div>
-    <div className="skeleton h-4 w-40 mx-auto mt-2"></div>
+    return <div className="grid gap-3 grid-cols-2">
+
+<div className="card w-11/12 md:w-1/3 mx-auto bg-base-100 shadow-sm p-3 text-center ">
+    <div className="skeleton h-28 w-28  mx-auto"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-2"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-2"></div>
     <div className="skeleton h-4 w-32 mx-auto mt-1"></div>
-    <div className="skeleton h-4 w-40 mx-auto mt-2"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-2"></div>
     <div className="skeleton h-4 w-32 mx-auto mt-1"></div>
-    <div className="skeleton h-4 w-40 mx-auto mt-2"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-2"></div>
+
+  </div>
+  <div className="card w-11/12 md:w-1/3 mx-auto bg-base-100 shadow-sm p-3 text-center ">
+    <div className="skeleton h-28 w-28  mx-auto"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-2"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-2"></div>
     <div className="skeleton h-4 w-32 mx-auto mt-1"></div>
-    <div className="skeleton h-4 w-full mx-auto mt-1"></div>
-    <div className="skeleton h-8 w-20 mx-auto mt-2"></div>
-  </div>;
+    <div className="skeleton h-4 w-32 mx-auto mt-2"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-1"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-2"></div>
+
+  </div>
+  <div className="card w-11/12 md:w-1/3 mx-auto bg-base-100 shadow-sm p-3 text-center ">
+    <div className="skeleton h-28 w-28  mx-auto"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-2"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-2"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-1"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-2"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-1"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-2"></div>
+
+  </div>
+  <div className="card w-11/12 md:w-1/3 mx-auto bg-base-100 shadow-sm p-3 text-center">
+    <div className="skeleton h-28 w-28  mx-auto"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-2"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-2"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-1"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-2"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-1"></div>
+    <div className="skeleton h-4 w-32 mx-auto mt-2"></div>
+
+  </div>
+
+    </div>;
   }
 
   if (error) {
     return <div>Error: {error.message}</div>;
   }
 
+  console.log(moderators)
 
   return (
     <div className=' mx-auto w-11/12'>
@@ -66,7 +98,7 @@ export default function Moderators() {
         <div className="grid md:grid-cols-5 grid-cols-2 gap-3">
         {moderators.map((moderator, index) => (
           <div className='bg-white text-center shadow' key={index}>
-            <img src={moderator.image} alt="Image" className='w-full' />
+            <img src={moderator.photoURL} alt="Image" className='w-full' />
             <div className="info py-2 text-sm text-gray-700">
               <h2 className='font-bold'> {moderator.name} </h2>
               <p> {moderator.role} </p>
@@ -79,14 +111,14 @@ export default function Moderators() {
               </a>
               
               {/* WhatsApp Button */}
-              <a href={`https://wa.me/${moderator.whatsappNumber}`} className='btn btn-sm btn-success text-white'>
+              <a href={`https://wa.me/+88${moderator.whatsappNumber}`} className='btn btn-sm btn-success text-white'>
                 <FaWhatsapp />
               </a>
               
               {/* Facebook Button */}
-              <a href={moderator.facebookId} target="_blank" rel="noopener noreferrer" className='btn btn-sm btn-primary text-white'>
+             {moderator.facebookId &&  <a href={moderator.facebookId} target="_blank" rel="noopener noreferrer" className='btn btn-sm btn-primary text-white'>
                 <FaFacebookF />
-              </a>
+              </a>}
             </div>
           </div>))}
         </div>
