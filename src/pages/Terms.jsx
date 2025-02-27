@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
 export default function Terms() {
+  
   return (
     <div className="mx-auto w-11/12 my-5 text-sm">
       <Helmet>

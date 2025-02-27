@@ -27,6 +27,9 @@ import AddOrganization from './components/organization/AddOrganization';
 import { OrganizationProvider } from './context/OrganizationProvider';
 import OrganizationDetails from './components/organization/OrganizationDetails';
 import EditPage from './dashboard/EditPage';
+import UserProvider from './context/UserProvider';
+import DashboardHome from './dashboard/DashboardHome';
+import MyDonors from './dashboard/MyDonors';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -49,10 +52,7 @@ const router = createBrowserRouter([
         path: "/register",
         element: <Register></Register>
       },
-      {
-        path: "/add",
-        element: <PrivateRoute> <AddDonor></AddDonor> </PrivateRoute>
-      },
+      
       {
         path: "/:id",
         element: <DonorDetails></DonorDetails>,
@@ -88,16 +88,32 @@ const router = createBrowserRouter([
         path: "/support",
         element:  <Moderators></Moderators> 
       },
-      {
-        path: "/dashboard",
-        element: <PrivateRoute> <Dashboard></Dashboard> </PrivateRoute>
-      },
-      {
-        path: "/add-org",
-        element: <PrivateRoute> <AddOrganization></AddOrganization> </PrivateRoute>
-      },
+      
     ]
   },
+  {
+    path: "/dashboard",
+    element: <PrivateRoute> <Dashboard></Dashboard> </PrivateRoute>,
+    errorElement: <ErrorPage></ErrorPage>,
+    children: [
+      {
+        path: "/dashboard",
+        element: <PrivateRoute> <DashboardHome></DashboardHome> </PrivateRoute>
+      },
+      {
+        path: "/dashboard/add-org",
+        element: <PrivateRoute> <AddOrganization></AddOrganization> </PrivateRoute>
+      },
+      {
+        path: "/dashboard/add",
+        element: <PrivateRoute> <AddDonor></AddDonor> </PrivateRoute>
+      },
+      {
+        path: "/dashboard/my-donors",
+        element: <PrivateRoute> <MyDonors></MyDonors> </PrivateRoute>
+      },
+    ]
+  }
 ]);
 
 createRoot(document.getElementById('root')).render(
@@ -106,7 +122,9 @@ createRoot(document.getElementById('root')).render(
       <AuthProvider>
         <OrganizationProvider>
           <HelmetProvider>
-             <RouterProvider router={router} />
+             <UserProvider>
+              <RouterProvider router={router} />
+             </UserProvider>
           </HelmetProvider>
         </OrganizationProvider>
       </AuthProvider>

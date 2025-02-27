@@ -48,7 +48,7 @@ export default function Header() {
             {   user? 
               <>
               <li onClick={closeDrawer}><Link to='/dashboard'> ড্যাশবোর্ড </Link></li>
-              <li onClick={closeDrawer}> <Link to='/add'> ডোনার যুক্ত করুন </Link></li>
+              <li onClick={closeDrawer}> <Link to='/dashboard/add'> ডোনার যুক্ত করুন </Link></li>
               <li onClick={closeDrawer}><button onClick={handleLogout}>লগআউট করুন</button></li>
               </> :
               <>

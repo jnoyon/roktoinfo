@@ -25,18 +25,48 @@ export default function Login() {
         })
     }
 
+   
+
     const handleGoogleLogin = () => {
         const success = () => toast.success("User Login Successful!");
         const failed = (error) => toast.error(error);
+    
         googleSignIn()
-        .then(result=> {
+        .then(result => {
+            const user = result.user;
             success();
-            navigate('/dashboard');
+            
+            // Create newUser object
+            const newUser = {
+                name: user.displayName,
+                email: user.email,
+                photo: user.photoURL || 'https://i.ibb.co.com/CLBwD0z/cropped-logocircle-1.webp',
+                isMember: true,
+                isModerator: false,
+                isAdmin: false,
+            };
+    
+            // Send user data to the backend
+            fetch('https://roktoinfo-server.vercel.app/users', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newUser),
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log("User data saved:", data);
+                navigate('/dashboard'); 
+            })
+            .catch(error => {
+                console.error("Error saving user:", error);
+            });
+    
         })
-        .catch(error=> {
-            failed(error.message)
-        })
-    }
+        .catch(error => {
+            failed(error.message);
+        });
+    };
+    
 
   return (
     <div className='w-11/12 mx-auto flex flex-col items-center justify-center'>

@@ -5,6 +5,7 @@ import donorIcon from '../assets/images/donor-icon.png'
 import { BloodDonorsContext } from "../context/BloodDonorsContext";
 import { authContext } from "../firebase/AuthProvider";
 import { Helmet } from "react-helmet-async";
+import { UserContext } from "../context/UserProvider";
 
 const notify = () => toast.success("রক্তদাতার লিংক কপি করা হয়েছে!")
 const updated = () => toast.success("রক্তদাতার তথ্য আপডেট করা হয়েছে")
@@ -50,8 +51,8 @@ export default function DonorDetails() {
     return diffDays;
   };
 
-  
-  
+  const {isMember, isAdmin, isModerator} = useContext(UserContext);
+  console.log(isMember, isAdmin, isModerator)
   if (!donor) {
     return (
       <div className="card w-11/12 md:w-1/3 mx-auto bg-base-100 shadow-sm p-3 text-center my-10">
@@ -138,7 +139,7 @@ export default function DonorDetails() {
           <h2 className="text-lg font-bold"> {donor.donorName} </h2>
           {donor.profession && <p className="text-sm text-gray-600 mb-1"> {donor.profession }  </p>}
           <p className="text-sm text-gray-600 mb-1"> রক্তের গ্রুপ: {donor.bloodGroup} (মোট রক্তদান: {donor.totalDonation} বার) <br /> {donor.totalDonation > 0 && <span> সর্বশেষ রক্তদান: {formatDate(donor.lastDonation)} ({calculateDaysAgo(donor.lastDonation)} দিন আগে) </span>} </p>
-          {user && donor.donorAuthor === user.email && <div className="action my-2 gap-2 flex justify-center"> 
+          {user && donor.donorAuthor === user.email || isModerator && <div className="action my-2 gap-2 flex justify-center"> 
             <button className="btn btn-xs btn-error text-white" onClick={()=>document.getElementById('updateModal').showModal()}> রক্তদানের তথ্য আপডেট </button>
             {/* <Link className="btn btn-xs btn-accent text-white" to={`/edit/${donor._id}`}> প্রোফাইল এডিট </Link>  */}
               
