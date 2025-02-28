@@ -7,6 +7,7 @@ export default function AddNewRequest() {
     name: '',
     patientName: '',
     phone: '',
+    blood_group: '', // Added blood group field
     location: '',
     issue: '',
     date: new Date().toISOString().split('T')[0], // Default to today's date
@@ -51,6 +52,7 @@ export default function AddNewRequest() {
             name: '',
             patientName: '',
             phone: '',
+            blood_group: '', // Reset blood group field
             location: '',
             issue: '',
             date: new Date().toISOString().split('T')[0],
@@ -119,6 +121,25 @@ export default function AddNewRequest() {
                 value={requestData.phone}
                 onChange={handleInputChange}
               />
+            </label>
+            <label className="select w-full">
+              <span className="label">রক্তের গ্রুপ</span>
+              <select
+                name="blood_group"
+                value={requestData.blood_group} // Fixing the value mapping
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">বাছাই করুন</option>
+                <option value="A+">A+</option>
+                <option value="B+">B+</option>
+                <option value="O+">O+</option>
+                <option value="AB+">AB+</option>
+                <option value="A-">A-</option>
+                <option value="B-">B-</option>
+                <option value="O-">O-</option>
+                <option value="AB-">AB-</option>
+              </select>
             </label>
             <label className="input w-full">
               <span className="label"> স্থান </span>

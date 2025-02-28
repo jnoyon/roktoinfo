@@ -1,4 +1,3 @@
-import React from 'react'
 import AddNewRequest from '../components/bloodrequest/AddNewRequest'
 import BloodRequests from '../components/bloodrequest/BloodRequests'
 

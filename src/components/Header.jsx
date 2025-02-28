@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom'
 import logo from '../assets/images/logo.png'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { authContext } from '../firebase/AuthProvider'
 import { FaBarsStaggered } from "react-icons/fa6";
-import donorIcon from "../assets/images/donor-icon.png"
 export default function Header() {
 
   const {user, UserSignOut} = useContext(authContext);
@@ -16,6 +15,23 @@ export default function Header() {
       console.log('logout')
     })
   }
+
+
+  const [donors, setDonors] = useState(null);
+  
+    useEffect(() => {
+      fetch('https://roktoinfo-server.vercel.app/donors')
+        .then(res => res.json())
+        .then(data => {
+          const pendingDonors = data.filter(donor => !donor.status);
+          setDonors(pendingDonors);
+        });
+    }, []);
+
+    if (donors === null) {
+      return null;
+    }
+
 
   const closeDrawer = () => {
     document.getElementById('my-drawer').checked = false;
@@ -32,8 +48,8 @@ export default function Header() {
         <div className="drawer">
           <input id="my-drawer" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content">
-            {user && <div className="status status-error animate-bounce mr-1"></div>}
-            <label htmlFor="my-drawer" className="btn btn-error drawer-button text-white"> <FaBarsStaggered /> </label>
+            {user && (donors.length > 0? <div className="status status-error animate-bounce mr-1"></div> : <div className="status status-success animate-bounce mr-1"></div>)} 
+             <label htmlFor="my-drawer" className="btn btn-error drawer-button text-white"> <FaBarsStaggered /> </label>
           </div>
           <div className="drawer-side">
             <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>

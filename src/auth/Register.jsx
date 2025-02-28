@@ -45,9 +45,8 @@ export default function Register() {
 
             toast.success("Registration Successful!");
             
-            // Navigate to dashboard after successful API save
             setTimeout(() => {
-                navigate('/dashboard');
+                navigate('/');
             }, 1000);
 
         } catch (error) {

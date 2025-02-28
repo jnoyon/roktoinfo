@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
 import { authContext } from '../../firebase/AuthProvider';
+import { UserContext } from '../../context/UserProvider';
 
 export default function BloodRequests() {
 
@@ -27,31 +28,42 @@ const {user} = useContext(authContext);
 
 
    
-    const handleDelete = async (id) => {
-        const result = await Swal.fire({
-          title: "রক্তদাতা মুছে ফেলতে চান?",
-          text: "এটা মুছে ফেললে রক্ত ডট ইনফো তে এই প্রোফাইল আর দেখাবে না!",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "হ্যাঁ, মুছে ফেলতে চাই!",
-          cancelButtonText: "না",
-        });
-      
-        if (result.isConfirmed) {
-          try {
-            const res = await fetch(`https://roktoinfo-server.vercel.app/requests/${id}`, { method: "DELETE" });
-            const data = await res.json();
-            if (data.deletedCount > 0) {
-              setRequests(requests.filter(request => request._id !== id));
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "রক্তদাতা মুছে ফেলতে চান?",
+      text: "এটা মুছে ফেললে রক্ত ডট ইনফো তে এই প্রোফাইল আর দেখাবে না!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "হ্যাঁ, মুছে ফেলতে চাই!",
+      cancelButtonText: "না",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`https://roktoinfo-server.vercel.app/requests/${id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.message === "Request deleted") { 
+              setRequests((prevRequests) =>
+                prevRequests.filter((request) => request._id !== id)
+              );
               Swal.fire("মুছে ফেলা হয়েছে!", "রিকুয়েস্ট মুছে ফেলা হয়েছে", "success");
+            } else {
+              Swal.fire("ত্রুটি!", "রিকুয়েস্ট পাওয়া যায়নি!", "error");
             }
-          } catch (err) {
+          })
+          .catch((err) => {
+            console.error("Delete error:", err);
             Swal.fire("ত্রুটি!", "ডিলিট করতে সমস্যা হয়েছে!", "error");
-          }
-        }
-      };
+          });
+      }
+    });
+  };
+  
+  
+  
 
       const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -97,8 +109,7 @@ const {user} = useContext(authContext);
         
         return `${hours}:${minutes}:${seconds} ${ampm}`;
       };
-      
-
+      const {isAdmin, isModerator} = useContext(UserContext);
   return (
     <div>
         {requests.length >0 && <h2 className='divider divider-error text-red-500'> যাদের রক্ত প্রয়োজন </h2>}
@@ -115,13 +126,14 @@ const {user} = useContext(authContext);
         :
         <div className="grid">
             {
-                requests.map((request, index)=> <div className="bg-white rounded-md shadow-sm p-2 mb-5">
-                <h1 className='text-sm text-center  bg-red-400 text-white py-1 mb-2 rounded-md'> রক্ত প্রয়োজন </h1>
+                requests.map((request, index)=> <div className="bg-white rounded-md shadow-sm p-2 mb-5" key={index}>
+                <h1 className='text-sm text-center  bg-red-400 text-white py-1 mb-2 rounded-md'> {request.blood_group} রক্ত প্রয়োজন </h1>
 
                 <ul className='list-disc ml-5 flex flex-col text-sm request-info'>
                   <li> রিকুয়েস্ট আইডি: {request._id.match(/\d/g).slice(-3).join("")} </li>
                   {request.patientName && <li> রোগীর নাম: {request.patientName} </li>}
                   {request.issue && <li> রোগীর সমস্যা: {request.issue} </li>}
+                  {request.blood_group && <li> রক্তের গ্রুপ: {request.blood_group} </li>}
                   {request.date && <li> রক্তগ্রহণের তারিখ: {formatDate(request.date)} </li>}
                   {request.phone && <li> যোগাযোগ নম্বর: {request.phone} </li>}
                   {request.location && <li> রক্তগ্রহণের স্থান: {request.location} </li>}
@@ -133,7 +145,7 @@ const {user} = useContext(authContext);
                 <div className="text-center mt-2">
                     <button className='btn btn-primary btn-sm text-white mr-2' onClick={() => handleCopy(request)}> কপি করুন </button>
                     <a className='btn btn-success btn-sm text-white mr-2' href={`tel:${request.phone}`}> যোগাযোগ করুন </a>
-                    {user && <button onClick={()=>handleDelete(request._id)} className='btn btn-sm btn-error text-white'> ডিলিট </button>}
+                    {( isModerator || isAdmin ) && <button onClick={()=>handleDelete(request._id)} className='btn btn-sm btn-error text-white'> ডিলিট </button>}
                 </div>
                 <div className="text-center text-sm mt-3 text-gray-600">
                   <h2 className='font-bold border-b border-gray-300 py-1 mb-1'> আবেদনকারী </h2>

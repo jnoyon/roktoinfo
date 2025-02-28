@@ -1,15 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLoaderData } from "react-router-dom";
-import { BloodDonorsContext } from "../context/BloodDonorsContext";
-import { authContext } from "../firebase/AuthProvider";
+
 
 export default function EditPage() {
   const [organization, setOrganization] = useState('');
-  const [image, setImage] = useState(null);
   const [donor, setDonor] = useState(null);
   const loaderData = useLoaderData();
-  const { loading } = useContext(BloodDonorsContext);
-  const { user } = useContext(authContext);
 
   useEffect(() => {
     setTimeout(() => {
@@ -37,12 +33,13 @@ export default function EditPage() {
 
   const handleUpdate = async (e, id) => {
     e.preventDefault();
-
+  
     const formData = new FormData(e.target);
-
+  
     const updatedDonor = {
       donorName: formData.get("donor_name"),
       fatherName: formData.get("father_name"),
+      donorAuthor: formData.get("donor_author"),
       currentAddress: formData.get("current_address"),
       permanentAddress: formData.get("permanent_address"),
       bloodGroup: formData.get("blood_group"),
@@ -55,19 +52,20 @@ export default function EditPage() {
       profession: formData.get("profession"),
       dob: formData.get("dob"),
       status: formData.get("donor_status") === "নিয়মিত",
+      organization: formData.get("organization"),  // Handling the organization value
     };
-
+  
     try {
       const response = await fetch(`https://roktoinfo-server.vercel.app/donors/${id}`, {
-        method: "PUT",
+        method: "PATCH",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", // Ensure the backend expects JSON
         },
-        body: JSON.stringify(updatedDonor),
+        body: JSON.stringify(updatedDonor), // Sending JSON data to the backend
       });
-
+  
       const data = await response.json();
-
+  
       if (data.modifiedCount > 0) {
         alert("Profile updated successfully!");
         setDonor((prev) => ({
@@ -82,20 +80,14 @@ export default function EditPage() {
       alert("An error occurred while updating the profile.");
     }
   };
+  
+  
 
   return (
     <div className='w-11/12 mx-auto py-5'>
       <h2 className='text-lg font-bold divider'> প্রোফাইল আপডেট করুন </h2>
       <form className='w-full flex flex-col gap-5 bg-white p-2' onSubmit={(e) => handleUpdate(e, donor._id)}>
-        <fieldset className="fieldset">
-          <legend className="fieldset-legend">রক্তদাতার ছবি</legend>
-          <input
-            type="file"
-            className="file-input w-full"
-            onChange={(e) => setImage(e.target.files[0])}
-          />
-          <label className="fieldset-label">স্কয়ার সাইজের ছবি হলে ভাল হয়</label>
-        </fieldset>
+
         <label className="floating-label">
           <span>নাম *</span>
           <input
@@ -240,8 +232,16 @@ export default function EditPage() {
           <input
             type="text"
             className="input input-md w-full"
-            value={organization}
-            onChange={(e) => setOrganization(e.target.value)}
+            defaultValue={donor.organization}
+            autoComplete="off"
+          />
+        </label>
+        <label className="floating-label">
+          <span>প্রোফাইল</span>
+          <input
+            type="text"
+            className="input input-md w-full"
+           defaultValue={donor.donorAuthor}
             autoComplete="off"
           />
         </label>

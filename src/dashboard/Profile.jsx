@@ -29,9 +29,9 @@ export default function Profile() {
                     name: data.name || '',
                     email: data.email || '',
                     mobileNumber: data.mobileNumber || '',
-                    whatsAppNumber: data.whatsAppNumber || '',
+                    whatsappNumber: data.whatsappNumber || '',
                     address: data.address || '',
-                    fbLink: data.fbLink || '',
+                    facebookId: data.facebookId || '',
                     imgURL: data.photo || '',
                 });
                 setLoading(false);
@@ -101,7 +101,7 @@ export default function Profile() {
 
                         <label>
                             <span>WhatsApp নম্বর (যদি থাকে)</span>
-                            <input type="number" name="whatsAppNumber" value={formData.whatsAppNumber} onChange={handleChange} className="input input-md w-full" />
+                            <input type="number" name="whatsappNumber" value={formData.whatsappNumber} onChange={handleChange} className="input input-md w-full" />
                         </label>
 
                         <label>
@@ -110,7 +110,7 @@ export default function Profile() {
                         </label>
                         <label>
                             <span>ফেইসবুক লিংক (যদি থাকে)</span>
-                            <input type="url" name="fbLink" value={formData.fbLink} onChange={handleChange} className="input input-md w-full" />
+                            <input type="url" name="facebookId" value={formData.facebookId} onChange={handleChange} className="input input-md w-full" />
                         </label>
 
                         <label>

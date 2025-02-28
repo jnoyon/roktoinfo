@@ -12,13 +12,13 @@ export default function Login() {
         e.preventDefault();
         const email = e.target.email.value;
         const password = e.target.password.value;
-        const success = () => toast.success("User Login Successful!");
+        const success = () => toast.success("লগিন হয়েছে!");
         const failed = () => toast.error('আপনার তথ্য সঠিক নয়');
         signInUser(email, password)
         .then(result=> {
             e.target.reset();
             success();
-            navigate('/dashboard');
+            navigate('/');
         })
         .catch(error=> {
             failed()
@@ -28,7 +28,7 @@ export default function Login() {
    
 
     const handleGoogleLogin = () => {
-        const success = () => toast.success("User Login Successful!");
+        const success = () => toast.success("লগিন হয়েছে!");
         const failed = (error) => toast.error(error);
     
         googleSignIn()
@@ -55,7 +55,7 @@ export default function Login() {
             .then(res => res.json())
             .then(data => {
                 console.log("User data saved:", data);
-                navigate('/dashboard'); 
+                navigate('/'); 
             })
             .catch(error => {
                 console.error("Error saving user:", error);
