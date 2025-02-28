@@ -33,13 +33,17 @@ export default function BloodGroupDonors() {
     return Math.floor((new Date() - lastDonationDate) / (1000 * 60 * 60 * 24));
   };
 
-  // Filter donors based on the extracted blood group
-  const filteredDonors = donors.filter((donor) => donor.bloodGroup === bloodGroup);
+  // Filter donors based on the extracted blood group and status being true
+  const filteredDonors = donors.filter((donor) => donor.bloodGroup === bloodGroup && donor.status === true);
 
-  // Sort donors by last donation date (latest first)
-  const sortedDonors = [...filteredDonors].sort(
-    (a, b) => new Date(b.lastDonation) - new Date(a.lastDonation)
-  );
+  // Sort donors: those who have donated the least or not at all come first
+  const sortedDonors = [...filteredDonors].sort((a, b) => {
+    // If donor a has no donation or hasn't donated recently, they should come first
+    const lastDonationA = a.lastDonation ? new Date(a.lastDonation) : new Date(0); // If no donation, treat it as the farthest possible date
+    const lastDonationB = b.lastDonation ? new Date(b.lastDonation) : new Date(0); // Same for donor B
+
+    return lastDonationA - lastDonationB; // Sort in ascending order: older donation comes first (or no donation)
+  });
 
   return (
     <div className="mx-auto w-11/12 py-5">

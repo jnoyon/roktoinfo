@@ -30,6 +30,8 @@ import EditPage from './dashboard/EditPage';
 import UserProvider from './context/UserProvider';
 import DashboardHome from './dashboard/DashboardHome';
 import MyDonors from './dashboard/MyDonors';
+import Profile from './dashboard/Profile';
+import Donors from './pages/Donors';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -88,7 +90,10 @@ const router = createBrowserRouter([
         path: "/support",
         element:  <Moderators></Moderators> 
       },
-      
+      {
+        path: "/donors",
+        element:  <Donors></Donors>
+      },
     ]
   },
   {
@@ -111,6 +116,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/my-donors",
         element: <PrivateRoute> <MyDonors></MyDonors> </PrivateRoute>
+      },
+      {
+        path: "/dashboard/profile",
+        element: <PrivateRoute> <Profile></Profile> </PrivateRoute>
       },
     ]
   }

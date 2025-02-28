@@ -130,7 +130,7 @@ export default function AddDonor() {
       locations,
       totalDonation,
       donorAuthor,
-      status: true
+      status: false
     };
 
     fetch('https://roktoinfo-server.vercel.app/donors', {

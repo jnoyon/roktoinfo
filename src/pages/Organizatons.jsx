@@ -68,7 +68,7 @@ export default function Organizations() {
     <div className='mx-auto w-11/12 my-5'>
       <div className="flex justify-between bg-white p-2 rounded-md shadow-sm items-center text-sm mb-5">
         <h2> রক্তদাতা সংগঠন যুক্ত করতে চান? </h2>
-        <Link to='/add-org' className="btn">
+        <Link to='/dashboard/add-org' className="btn">
           এখানে ক্লিক করুন
         </Link>
       </div>

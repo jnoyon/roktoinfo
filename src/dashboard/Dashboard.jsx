@@ -44,11 +44,11 @@ export default function Dashboard() {
   const toggleDrawer = () => setDrawerOpen(!drawerOpen);
 
   return (
-    <div className="bg-gradient-to-r from-indigo-50 via-red-50 to-yellow-50 min-h-screen">
+    <div className="bg-gradient-to-r from-blue-50 via-red-50 to-yellow-50 min-h-screen">
       <div className="mb-10">
-        <div className="fixed top-0 w-full z-50 bg-white shadow-md py-2">
+        <div className="fixed top-0 w-full z-50 bg-white shadow-md  py-2">
           <div className="flex justify-between mx-auto w-11/12 items-center rounded-md md:hidden">
-            <p className="font-bold pl-5"> <Link to='/dashboard'> ড্যাশবোর্ড </Link> </p>
+            <p className="font-bold pl-5">  ড্যাশবোর্ড  </p>
             <button className="btn btn-error text-white btn-sm drawer-button" onClick={toggleDrawer}>
               <FaBars />
             </button>
@@ -56,19 +56,19 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className={`drawer ${drawerOpen ? 'lg:drawer-open' : ''}`}>
+      <div className='drawer lg:drawer-open'>
         <input id="my-drawer" type="checkbox" className="drawer-toggle" checked={drawerOpen} readOnly />
         <div className="drawer-content">
           <Outlet />
         </div>
 
-        <div className="drawer-side z-50">
+        <div className="drawer-side  z-50">
           <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay" onClick={() => setDrawerOpen(false)}></label>
           <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
             <h2 className="font-bold px-3 py-1 border-b border-gray-300 text-lg"> প্যানেল </h2>
             <li><Link onClick={() => setDrawerOpen(false)} to="/"> হোমপেইজ </Link></li>
             {isAdmin && (
-              <li><Link onClick={() => setDrawerOpen(false)} to="/dashboard"> Dashboard </Link></li>
+              <li><Link onClick={() => setDrawerOpen(false)} to="/dashboard"> ড্যাশবোর্ড </Link></li>
             )}
 
             <h2 className="font-bold px-3 py-1 border-b border-gray-300 text-lg mt-2"> রক্তদাতা </h2>
@@ -81,7 +81,6 @@ export default function Dashboard() {
 
             <h2 className="font-bold px-3 py-1 border-b border-gray-300 text-lg mt-2"> ব্যবহারকারী </h2>
             <li><NavLink onClick={() => setDrawerOpen(false)} to="/dashboard/profile"> আমার প্রোফাইল </NavLink></li>
-            {isAdmin && <li><Link onClick={() => setDrawerOpen(false)} to="/dashboard/users"> ব্যবহারকারী </Link></li>}
             <li><button onClick={UserSignOut} className="btn text-white btn-error w-full mt-4"> লগআউট </button></li>
           </ul>
         </div>

@@ -1,5 +1,4 @@
 import React from 'react'
-import Slider from '../components/Slider'
 import TopDonors from '../components/TopDonors'
 import Statistics from '../components/Statistics'
 import NoticeForMother from '../components/NoticeForMother'
@@ -12,6 +11,12 @@ export default function Home() {
     <div>
         <Helmet>
           <title> হোমপেইজ - রক্ত ডট ইনফো </title>
+          <meta name="description" content="রক্ত.ইনফো (Rokto.Info) একটি ব্লাড ডিরেক্টরি ওয়েবসাইট যার মাধ্যমে রক্তদাতাকে খুঁজে বের করা যাবে।" />
+          <meta name="keywords" content="রক্ত, রক্তদান, ডোনার, পরিসংখ্যান" />
+          <meta property="og:title" content="হোমপেইজ - রক্ত ডট ইনফো" />
+          <meta property="og:description" content="রক্ত.ইনফো (Rokto.Info) একটি ব্লাড ডিরেক্টরি ওয়েবসাইট যার মাধ্যমে রক্তদাতাকে খুঁজে বের করা যাবে।" />
+          <meta property="og:image" content="https://i.ibb.co.com/CLBwD0z/cropped-logocircle-1.webp" />
+          <meta name="robots" content="index, follow" />
         </Helmet>
         
         <NoticeForMother></NoticeForMother>

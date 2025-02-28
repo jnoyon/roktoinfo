@@ -41,6 +41,7 @@ export default function Header() {
             <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4 flex flex-col gap-2">
             <h2 className='font-bold border-b border-gray-300 pb-2'> পেইজ সমূহ </h2>
               <li onClick={closeDrawer}> <Link to='/about' className='px-2 rounded-md py-1'> রক্ত ডট ইনফো সম্পর্কে </Link> </li>
+              <li onClick={closeDrawer}> <Link to='/donors' className='px-2 rounded-md py-1'> সকল রক্তদাতা </Link> </li>
               <li onClick={closeDrawer}> <Link to='/organizations' className='px-2 rounded-md py-1'> সংগঠনসমূহ </Link> </li>
               <li onClick={closeDrawer}> <Link to='/terms' className='px-2 rounded-md py-1'> নীতিমালা </Link> </li>
 

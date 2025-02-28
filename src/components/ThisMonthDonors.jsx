@@ -28,11 +28,14 @@ export default function ThisMonthDonors() {
   ];
 
   // Filter the donors to include only those who donated this month
+  // Sort donors by most recent donation date first
   const thisMonthDonors = useMemo(() => {
-    return donors.filter((donor) => {
-      const lastDonationDate = new Date(donor.lastDonation);
-      return lastDonationDate.getMonth() === currentMonth && lastDonationDate.getFullYear() === currentYear;
-    });
+    return donors
+      .filter((donor) => {
+        const lastDonationDate = new Date(donor.lastDonation);
+        return lastDonationDate.getMonth() === currentMonth && lastDonationDate.getFullYear() === currentYear;
+      })
+      .sort((a, b) => new Date(b.lastDonation) - new Date(a.lastDonation)); // Sort by last donation date, most recent first
   }, [donors, currentMonth, currentYear]);
 
   return (
