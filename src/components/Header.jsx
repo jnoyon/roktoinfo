@@ -29,7 +29,20 @@ export default function Header() {
     }, []);
 
     if (donors === null) {
-      return null;
+      return  <div className='bg-base-100 shadow-sm sticky top-0 z-50'>
+          <div className="navbar  mx-auto w-11/12">
+          <div className="flex-1">
+            <Link to='/'> <img src={logo} alt="" className='w-40' /> </Link>
+          </div>
+          <div className="flex-none">
+          <div className="drawer">
+            <div className="drawer-content">
+              <label htmlFor="my-drawer" className="btn btn-error drawer-button text-white"> <FaBarsStaggered /> </label>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
     }
 
 

@@ -4,6 +4,7 @@ import { BloodDonorsContext } from '../context/BloodDonorsContext';
 import { Link } from 'react-router-dom';
 import donorIcon from '../assets/images/donor-icon.png';
 import { Helmet } from 'react-helmet-async';
+import Instructions from '../components/Instructions';
 
 export default function BloodGroupDonors() {
   const { donors, loading } = useContext(BloodDonorsContext);
@@ -48,6 +49,7 @@ export default function BloodGroupDonors() {
   return (
     <div className="mx-auto w-11/12 py-5">
       <h2 className="text-center text-2xl font-bold mb-5 divider divider-error text-error">{bloodGroup} রক্তদাতা</h2>
+      <Instructions></Instructions>
       <Helmet>
         <title> {bloodGroup} গ্রুপের রক্তদাতা - রক্ত ডট ইনফো </title>
       </Helmet>

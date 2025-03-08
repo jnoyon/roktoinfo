@@ -216,7 +216,7 @@ export default function AddDonor() {
           <input
             type="text"
             name="donor_name"
-            placeholder="Your name"
+            placeholder="রক্তদাতার নাম"
             className="input input-md w-full"
             value={donorName}
             onChange={(e) => setDonorName(e.target.value)}
@@ -229,7 +229,7 @@ export default function AddDonor() {
           <input
             type="text"
             name="father_name"
-            placeholder="Father's name"
+            placeholder="রক্তদাতার পিতার নাম"
             className="input input-md w-full"
             value={fatherName}
             onChange={(e) => setFatherName(e.target.value)}
@@ -241,7 +241,7 @@ export default function AddDonor() {
           <input
             type="text"
             name="current_address"
-            placeholder="Current Address"
+            placeholder="বর্তমান ঠিকানা"
             className="input input-md w-full"
             value={currentAddress}
             onChange={(e) => setCurrentAddress(e.target.value)}
@@ -253,7 +253,7 @@ export default function AddDonor() {
           <input
             type="text"
             name="permanent_address"
-            placeholder="Permanent Address"
+            placeholder="স্থায়ী ঠিকানা"
             className="input input-md w-full"
             value={permanentAddress}
             onChange={(e) => setPermanentAddress(e.target.value)}
@@ -293,7 +293,7 @@ export default function AddDonor() {
           <input
             type="number"
             name="total_donation"
-            placeholder="Your mobile number"
+            placeholder="মোট রক্তদান"
             className="input input-md w-full"
             value={totalDonation}
             onChange={(e) => setTotalDonation(e.target.value)}
@@ -305,7 +305,7 @@ export default function AddDonor() {
           <input
             type="number"
             name="mobile_number"
-            placeholder="Your mobile number"
+            placeholder="রক্তদাতার মোবাইল নম্বর"
             className="input input-md w-full"
             value={mobileNumber}
             onChange={(e) => setMobileNumber(e.target.value)}
@@ -344,7 +344,7 @@ export default function AddDonor() {
           <input
             type="number"
             name="alt_mobile_number"
-            placeholder="Alternative mobile number"
+            placeholder="বিকল্প নম্বর"
             className="input input-md w-full"
             value={altMobileNumber}
             onChange={(e) => setAltMobileNumber(e.target.value)}
@@ -355,7 +355,7 @@ export default function AddDonor() {
           <input
             type="number"
             name="whatsappnumber"
-            placeholder="WhatsApp Number"
+            placeholder="WhatsApp নম্বর"
             className="input input-md w-full"
             value={whatsappNumber}
             onChange={(e) => setWhatsappNumber(e.target.value)}
@@ -367,7 +367,7 @@ export default function AddDonor() {
           <input
             type="number"
             name="weight"
-            placeholder="Weight"
+            placeholder="রক্তদাতার ওজন"
             className="input input-md w-full"
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
@@ -379,7 +379,7 @@ export default function AddDonor() {
           <input
             type="text"
             name="profession"
-            placeholder="Profession"
+            placeholder="পেশা"
             className="input input-md w-full"
             value={profession}
             onChange={(e) => setProfession(e.target.value)}

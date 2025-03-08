@@ -77,7 +77,8 @@ export default function DonorDetails() {
     e.preventDefault();
     const lastDonation = e.target.lastdonation.value;
     const totalDonation = e.target.totaldonation.value;
-    const updatedDonor = { lastDonation, totalDonation };
+    const donorAuthor = e.target.donorauthor.value;
+    const updatedDonor = { lastDonation, totalDonation, donorAuthor };
   
     fetch(`https://roktoinfo-server.vercel.app/donors/${id}`, {
       method: "PUT",
@@ -96,6 +97,7 @@ export default function DonorDetails() {
             ...prev,
             lastDonation,
             totalDonation,
+            donorAuthor
           }));
         }
         else {
@@ -154,6 +156,10 @@ export default function DonorDetails() {
                   <label className="input w-full">
                     <span className="label">মোট রক্তদান</span>
                     <input name="totaldonation" type="number" defaultValue={donor.totalDonation} />
+                  </label>
+                  <label className="input w-full">
+                    <span className="label">ডোনার প্রোফাইল</span>
+                    <input name="donorauthor" type="text" defaultValue={donor.donorAuthor} />
                   </label>
                   <input type="submit" className="btn btn-error text-white" value="আপডেট করুন" />
                   </form>
