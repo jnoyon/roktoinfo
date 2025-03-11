@@ -59,10 +59,34 @@ export default function AddDonor() {
     setShowSuggestions(false);
   };
 
+
+  const checkMobileNumberUnique = async (mobileNumber) => {
+    try {
+      const response = await fetch(`https://roktoinfo-server.vercel.app/check-mobile?mobileNumber=${mobileNumber}`);
+      const data = await response.json();
+      return data.isUnique;  // Assuming the server returns { isUnique: true/false }
+    } catch (error) {
+      console.error('Error checking mobile number uniqueness:', error);
+      return false;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     setLoading(true);  // Set loading to true while the request is processing
+
+    const isMobileUnique = await checkMobileNumberUnique(mobileNumber);
+  if (!isMobileUnique) {
+    Swal.fire({
+      title: 'দু:খিত!',
+      text: 'এই ডোনার ইতোমধ্যে যুক্ত রয়েছেন।',
+      icon: 'error',
+      confirmButtonText: 'ওকে',
+    });
+    setLoading(false);  // Set loading to false when done
+    return;
+  }
 
     const donorAuthor = user.email;
     let imageUrl = '';
