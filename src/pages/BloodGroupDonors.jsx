@@ -1,12 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { BloodDonorsContext } from '../context/BloodDonorsContext';
 import { Link } from 'react-router-dom';
 import donorIcon from '../assets/images/donor-icon.png';
 import { Helmet } from 'react-helmet-async';
 import Instructions from '../components/Instructions';
+import { FaLink } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function BloodGroupDonors() {
+
   const { donors, loading } = useContext(BloodDonorsContext);
   const { group } = useParams(); // Extract blood group from URL
 
@@ -34,25 +37,76 @@ export default function BloodGroupDonors() {
     return Math.floor((new Date() - lastDonationDate) / (1000 * 60 * 60 * 24));
   };
 
-  // Filter donors based on the extracted blood group and status being true
-  const filteredDonors = donors.filter((donor) => donor.bloodGroup === bloodGroup && donor.status === true);
+  // State to manage the active filter
+  const [filter, setFilter] = useState('active'); // Default filter is 'active'
+
+  // Filter donors based on the extracted blood group, status, and selected filter
+  const filteredDonors = donors.filter((donor) => {
+    // Filter by blood group and status
+    return donor.bloodGroup === bloodGroup &&
+      (filter === 'active' ? donor.status === true : filter === 'inactive' ? donor.status === false : true);
+  });
 
   // Sort donors: those who have donated the least or not at all come first
   const sortedDonors = [...filteredDonors].sort((a, b) => {
-    // If donor a has no donation or hasn't donated recently, they should come first
-    const lastDonationA = a.lastDonation ? new Date(a.lastDonation) : new Date(0); // If no donation, treat it as the farthest possible date
-    const lastDonationB = b.lastDonation ? new Date(b.lastDonation) : new Date(0); // Same for donor B
-
-    return lastDonationA - lastDonationB; // Sort in ascending order: older donation comes first (or no donation)
+    const lastDonationA = a.lastDonation ? new Date(a.lastDonation) : new Date(0);
+    const lastDonationB = b.lastDonation ? new Date(b.lastDonation) : new Date(0);
+    return lastDonationA - lastDonationB;
   });
+
+  const handleCopyLink = () => {
+    const currentURL = window.location.href; // Get the current page URL
+    navigator.clipboard.writeText(currentURL)
+      .then(() => {
+        // Show toast notification on successful copy
+        toast.success('রক্তের গ্রুপের লিংক কপি করা হয়েছে');
+      })
+      .catch((error) => {
+        console.error('Failed to copy link:', error);
+        toast.error('Failed to copy the link.');
+      });
+  };
 
   return (
     <div className="mx-auto w-11/12 py-5">
-      <h2 className="text-center text-2xl font-bold mb-5 divider divider-error text-error">{bloodGroup} রক্তদাতা</h2>
-      <Instructions></Instructions>
+      <ToastContainer
+      position="bottom-right"
+      autoClose={1000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick={false}
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="light"
+      />
+      <h2 className="text-center text-2xl font-bold mb-5 divider divider-error text-error">{bloodGroup} গ্রুপের রক্তদাতা</h2>
+      <Instructions />
+
+      <div className="flex justify-between bg-white rounded-md shadow mb-5 items-center filter">
+        <div role="tablist" className="tabs">
+          <a role="tab"
+            className={`tab ${filter === 'active' ? 'btn btn-error' : ''}`}
+            onClick={() => setFilter('active')} > একটিভ </a>
+          <a
+            role="tab"
+            className={`tab ${filter === 'inactive' ? 'btn btn-error' : ''}`}
+            onClick={() => setFilter('inactive')} >  ইন-একটিভ</a>
+          <a
+            role="tab"
+            className={`tab ${filter === 'all' ? 'btn btn-error ' : ''}`}
+            onClick={() => setFilter('all')}> সকল </a>
+        </div>
+          <button onClick={handleCopyLink} className='btn btn-error text-white'>
+          <FaLink />
+        </button>
+      </div>
+
       <Helmet>
-        <title> {bloodGroup} গ্রুপের রক্তদাতা - রক্ত ডট ইনফো </title>
+        <title>{bloodGroup} গ্রুপের রক্তদাতা - রক্ত ডট ইনফো</title>
       </Helmet>
+
       <div className="grid md:grid-cols-3 gap-5">
         {loading ? (
           <div className="flex flex-col gap-3 text-center bg-white rounded-md p-5 w-full">
@@ -74,8 +128,12 @@ export default function BloodGroupDonors() {
                   <h1 className="font-bold"> {donor.donorName} </h1>
                   <p className="text-sm"> {donor.currentAddress} </p>
                   <p className="text-sm text-gray-600 mb-1">
-                     মোট রক্তদান: {donor.totalDonation} বার <br />
-                    {donor.totalDonation > 0 && <span> সর্বশেষ রক্তদান: {formatDate(donor.lastDonation)} ({calculateDaysAgo(donor.lastDonation)} দিন আগে) </span>}
+                    মোট রক্তদান: {donor.totalDonation} বার <br />
+                    {donor.totalDonation > 0 && (
+                      <span>
+                        সর্বশেষ রক্তদান: {formatDate(donor.lastDonation)} ({calculateDaysAgo(donor.lastDonation)} দিন আগে)
+                      </span>
+                    )}
                   </p>
                 </div>
                 <div className="mt-2 flex gap-2 justify-center">
@@ -90,7 +148,9 @@ export default function BloodGroupDonors() {
             </div>
           ))
         ) : (
-          <p className="text-center col-span-3 text-gray-600"> কোনো {bloodGroup} রক্তদাতা পাওয়া যায়নি।</p>
+          <p className="text-center col-span-3 text-gray-600">
+            কোনো {bloodGroup} রক্তদাতা পাওয়া যায়নি।
+          </p>
         )}
       </div>
     </div>

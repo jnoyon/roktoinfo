@@ -6,6 +6,7 @@ import GroupNames from '../components/GroupNames'
 import { Helmet } from 'react-helmet-async';
 import NoticeBoard from '../components/organization/NoticeBoard'
 import ThisMonthDonors from '../components/ThisMonthDonors'
+import Search from '../components/Search'
 export default function Home() {
   return (
     <div>
@@ -20,6 +21,7 @@ export default function Home() {
         </Helmet>
         
         <NoticeForMother></NoticeForMother>
+        <Search></Search>
         <NoticeBoard></NoticeBoard>
         <GroupNames></GroupNames>
         <TopDonors></TopDonors>

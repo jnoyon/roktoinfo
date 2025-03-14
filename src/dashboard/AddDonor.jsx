@@ -167,7 +167,7 @@ export default function AddDonor() {
       .then((res) => res.json())
       .then((data) => {
         setLoading(false);  // Set loading to false when done
-        if (data.insertedId) {
+        if (data && data._id) {
           Swal.fire({
             title: 'অভিনন্দন!',
             text: 'আপনার প্রোফাইল যুক্ত করা হয়েছে',
