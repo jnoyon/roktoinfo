@@ -32,6 +32,8 @@ import DashboardHome from './dashboard/DashboardHome';
 import MyDonors from './dashboard/MyDonors';
 import Profile from './dashboard/Profile';
 import Donors from './pages/Donors';
+import AddDonorGuest from './pages/AddDonorGuest';
+import AddDonorSelect from './components/AddDonorSelect';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -89,6 +91,18 @@ const router = createBrowserRouter([
       {
         path: "/support",
         element:  <Moderators></Moderators> 
+      },
+      {
+        path: "/donors",
+        element:  <Donors></Donors>
+      },
+      {
+        path: "/add-donor",
+        element:  <AddDonorSelect></AddDonorSelect>
+      },
+      {
+        path: "/add-donor-guest",
+        element:  <AddDonorGuest></AddDonorGuest>
       },
       {
         path: "/donors",
